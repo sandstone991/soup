@@ -1,85 +1,20 @@
 from os import X_OK
 import pygame
+from generic_entity import GenericEntity
+run = [pygame.image.load('Textures/frames/knight_m_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f1.png'),
+       pygame.image.load('Textures/frames/knight_m_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f3.png')]
+sound = 'audio/Player/player_walk.wav'
+idle = [pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f1.png'),
+        pygame.image.load('Textures/frames/knight_m_idle_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f3.png')]
 
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        # IMPORTING ALL SPRITES
-        self.playerRunRight = [pygame.image.load('Textures/frames/knight_m_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f1.png'),
-                               pygame.image.load('Textures/frames/knight_m_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f3.png')]
-        self.playerRunLeft = [pygame.transform.flip(
-            x, True, False) for x in self.playerRunRight]
-
-        self.playerRunIndex = 0
-        self.playerIdleIndex = 0
-        self.playerIdleRight = [pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f1.png'),
-                                pygame.image.load('Textures/frames/knight_m_idle_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f3.png')]
-        self.playerIdleLeft = [pygame.transform.flip(
-            x, True, False) for x in self.playerIdleRight]
-        self.playerRunCurrent = self.playerRunRight
-        self.playerIdleCurrent = self.playerIdleRight
-        self.image = self.playerIdleCurrent[self.playerIdleIndex]
-        self.moveSound = pygame.mixer.Sound('audio/Player/player_walk.wav')
-        self.moveSound.set_volume(.5)
-        self.playSoundCnt = 5
-        self.x = x
-        self.y = y
-        # temp
-        self.rect = self.image.get_rect(midbottom=(x, y))
-        self.velX = 0
-        self.velY = 0
-        self.speed = 3
+class Player(GenericEntity):
+    def __init__(self, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav'):
+        super().__init__(x, y, running, idiling, sounds)
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
-        self.latestDirection = 'RIGHT'
-
-    def isRunning(self):
-        if self.velX == 0 and self.velY == 0:
-            return False
-        self.playerIdleIndex = 0
-        return True
-
-    def handleDirection(self):
-        if self.velX < 0:
-            self.playerRunCurrent = self.playerRunLeft
-            self.playerIdleCurrent = self.playerIdleLeft
-        elif self.velX > 0:
-            self.playerRunCurrent = self.playerRunRight
-            self.playerIdleCurrent = self.playerIdleRight
-
-    def runAnimation(self):
-        if self.playerRunIndex > 3:
-            self.playerRunIndex = 0
-        else:
-            self.playerRunIndex += 0.2
-
-        self.image = self.playerRunCurrent[int(self.playerRunIndex)]
-
-    def idleAnimation(self):
-        if self.playerIdleIndex > 3:
-            self.playerIdleIndex = 0
-        else:
-            self.playerIdleIndex += 0.1
-        self.image = self.playerIdleCurrent[int(self.playerIdleIndex)]
-
-    def handleAnimation(self):
-        self.handleDirection()
-        if self.isRunning():
-            # play sound
-            self.handleSound()
-            self.runAnimation()
-        else:
-            self.idleAnimation()
-
-    def handleSound(self):
-        if self.playSoundCnt >= 5:
-            self.moveSound.play()
-            self.playSoundCnt = 0
-        else:
-            self.playSoundCnt += 0.5
 
     def dash(self):
         pass
