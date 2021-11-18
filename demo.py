@@ -23,6 +23,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        # check for (W, A, S, D)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 playerO.left_pressed = True
