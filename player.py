@@ -9,6 +9,20 @@ idle = [pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), pygame.i
 
 
 class Player(GenericEntity):
+    """
+    A class to represent the player
+    which inherits from the GenericEntity class
+    ...
+
+    Attributes
+    ----------
+    Check the generic_entity class
+
+    Methods
+    -------
+    move():overridden from the parent class/ takes input from the main game loop and changes position
+    """
+
     def __init__(self, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav'):
         super().__init__(x, y, running, idiling, sounds)
         self.left_pressed = False
