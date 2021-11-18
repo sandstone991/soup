@@ -12,10 +12,16 @@ class Player(pygame.sprite.Sprite):
         # self.player_walk = [player_walk_1, player_walk_2]
         # self.player_index = 0
         # self.image = self.player_walk[self.player_index]
-        self.image = pygame.image.load(
+        self.playerRun = [pygame.image.load('Textures/frames/knight_f_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f1.png'),
+                          pygame.image.load('Textures/frames/knight_f_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f3.png')]
+        self.playerRunIndex = 0
+
+        self.playerIdle = pygame.image.load(
             'Textures/frames/knight_f_idle_anim_f0.png')
+        self.image = self.playerIdle
         self.x = x
         self.y = y
+        # temp
         self.rect = self.image.get_rect(midbottom=(x, y))
         self.velX = 0
         self.velY = 0
@@ -25,36 +31,23 @@ class Player(pygame.sprite.Sprite):
         self.up_pressed = False
         self.down_pressed = False
 
-    # def player_input(self):
-    #     # maybe a better approach is to put all events in the main game loop we'll see about that later
-    #     for event in pygame.event.get():
-        # if event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_a:
-        #         self.left_pressed = True
-        #     if event.key == pygame.K_d:
-        #         self.right_pressed = True
-        #     if event.key == pygame.K_w:
-        #         self.up_pressed = True
-        #     if event.key == pygame.K_s:
-        #         self.down_pressed = True
-        # if event.type == pygame.KEYUP:
-        #     if event.key == pygame.K_a:
-        #         self.left_pressed = False
-        #     if event.key == pygame.K_d:
-        #         self.right_pressed = False
-        #     if event.key == pygame.K_w:
-        #         self.up_pressed = False
-        #     if event.key == pygame.K_s:
-        #         self.down_pressed = False
+    def isRunning(self):
+        if self.velX == 0 and self.velY == 0:
+            return False
+        return True
+
+    def runAnimation(self):
+        if self.playerRunIndex == 3:
+            self.playerRunIndex = 0
+        else:
+            self.playerRunIndex += 1
 
     def animation_state(self):
-        if self.rect.bottom < 300:
-            self.image = self.player_jump
+        if self.isRunning():
+            self.runAnimation()
+            self.image = self.playerRun[self.playerRunIndex]
         else:
-            self.player_index += 0.1
-            if self.player_index >= len(self.player_walk):
-                self.player_index = 0
-            self.image = self.player_walk[int(self.player_index)]
+            self.image = self.playerIdle
 
     def dash(self):
         pass
@@ -88,3 +81,4 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.move()
+        self.animation_state()
