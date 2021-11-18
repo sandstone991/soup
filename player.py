@@ -5,20 +5,21 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        # player_walk_1 = pygame.image.load(
-        #     'graphics/player/player_walk_1.png').convert_alpha()
-        # player_walk_2 = pygame.image.load(
-        #     'graphics/player/player_walk_2.png').convert_alpha()
-        # self.player_walk = [player_walk_1, player_walk_2]
-        # self.player_index = 0
-        # self.image = self.player_walk[self.player_index]
-        self.playerRun = [pygame.image.load('Textures/frames/knight_f_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f1.png'),
-                          pygame.image.load('Textures/frames/knight_f_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f3.png')]
+        # IMPORTING ALL SPRITES
+        self.playerRunRight = [pygame.image.load('Textures/frames/knight_f_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f1.png'),
+                               pygame.image.load('Textures/frames/knight_f_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f3.png')]
+        self.playerRunLeft = [pygame.transform.flip(
+            x, True, False) for x in self.playerRunRight]
+
         self.playerRunIndex = 0
 
-        self.playerIdle = pygame.image.load(
+        self.playerIdleRight = pygame.image.load(
             'Textures/frames/knight_f_idle_anim_f0.png')
-        self.image = self.playerIdle
+        self.playerIdleLeft = pygame.transform.flip(
+            self.playerIdleRight, True, False)
+        self.image = self.playerIdleRight
+        self.playerRunCurrent = self.playerRunRight
+        self.playerIdleCurrent = self.playerIdleRight
         self.x = x
         self.y = y
         # temp
@@ -30,24 +31,34 @@ class Player(pygame.sprite.Sprite):
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
+        self.latestDirection = 'RIGHT'
 
     def isRunning(self):
         if self.velX == 0 and self.velY == 0:
             return False
         return True
 
+    def handleDirection(self):
+        if self.velX < 0:
+            self.playerRunCurrent = self.playerRunLeft
+            self.playerIdleCurrent = self.playerIdleLeft
+        elif self.velX > 0:
+            self.playerRunCurrent = self.playerRunRight
+            self.playerIdleCurrent = self.playerIdleRight
+
     def runAnimation(self):
-        if self.playerRunIndex == 3:
+        if self.playerRunIndex > 3:
             self.playerRunIndex = 0
         else:
-            self.playerRunIndex += 1
+            self.playerRunIndex += 0.2
+        self.image = self.playerRunCurrent[int(self.playerRunIndex)]
 
-    def animation_state(self):
+    def handleAnimation(self):
+        self.handleDirection()
         if self.isRunning():
             self.runAnimation()
-            self.image = self.playerRun[self.playerRunIndex]
         else:
-            self.image = self.playerIdle
+            self.image = self.playerIdleCurrent
 
     def dash(self):
         pass
@@ -81,4 +92,4 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.move()
-        self.animation_state()
+        self.handleAnimation()
