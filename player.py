@@ -6,27 +6,27 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         # IMPORTING ALL SPRITES
-        self.playerRunRight = [pygame.image.load('Textures/frames/knight_f_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f1.png'),
-                               pygame.image.load('Textures/frames/knight_f_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_f_run_anim_f3.png')]
+        self.playerRunRight = [pygame.image.load('Textures/frames/knight_m_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f1.png'),
+                               pygame.image.load('Textures/frames/knight_m_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f3.png')]
         self.playerRunLeft = [pygame.transform.flip(
             x, True, False) for x in self.playerRunRight]
 
         self.playerRunIndex = 0
-
-        self.playerIdleRight = pygame.image.load(
-            'Textures/frames/knight_f_idle_anim_f0.png')
-        self.playerIdleLeft = pygame.transform.flip(
-            self.playerIdleRight, True, False)
-        self.image = self.playerIdleRight
+        self.playerIdleIndex = 0
+        self.playerIdleRight = [pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f1.png'),
+                                pygame.image.load('Textures/frames/knight_m_idle_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f3.png')]
+        self.playerIdleLeft = [pygame.transform.flip(
+            x, True, False) for x in self.playerIdleRight]
         self.playerRunCurrent = self.playerRunRight
         self.playerIdleCurrent = self.playerIdleRight
+        self.image = self.playerIdleCurrent[self.playerIdleIndex]
         self.x = x
         self.y = y
         # temp
         self.rect = self.image.get_rect(midbottom=(x, y))
         self.velX = 0
         self.velY = 0
-        self.speed = 4
+        self.speed = 3
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
     def isRunning(self):
         if self.velX == 0 and self.velY == 0:
             return False
+        self.playerIdleIndex = 0
         return True
 
     def handleDirection(self):
@@ -53,12 +54,19 @@ class Player(pygame.sprite.Sprite):
             self.playerRunIndex += 0.2
         self.image = self.playerRunCurrent[int(self.playerRunIndex)]
 
+    def idleAnimation(self):
+        if self.playerIdleIndex > 3:
+            self.playerIdleIndex = 0
+        else:
+            self.playerIdleIndex += 0.1
+        self.image = self.playerIdleCurrent[int(self.playerIdleIndex)]
+
     def handleAnimation(self):
         self.handleDirection()
         if self.isRunning():
             self.runAnimation()
         else:
-            self.image = self.playerIdleCurrent
+            self.idleAnimation()
 
     def dash(self):
         pass
