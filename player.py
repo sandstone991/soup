@@ -20,6 +20,9 @@ class Player(pygame.sprite.Sprite):
         self.playerRunCurrent = self.playerRunRight
         self.playerIdleCurrent = self.playerIdleRight
         self.image = self.playerIdleCurrent[self.playerIdleIndex]
+        self.moveSound = pygame.mixer.Sound('audio/Player/player_walk.wav')
+        self.moveSound.set_volume(.5)
+        self.playSoundCnt = 5
         self.x = x
         self.y = y
         # temp
@@ -52,6 +55,7 @@ class Player(pygame.sprite.Sprite):
             self.playerRunIndex = 0
         else:
             self.playerRunIndex += 0.2
+
         self.image = self.playerRunCurrent[int(self.playerRunIndex)]
 
     def idleAnimation(self):
@@ -64,9 +68,18 @@ class Player(pygame.sprite.Sprite):
     def handleAnimation(self):
         self.handleDirection()
         if self.isRunning():
+            # play sound
+            self.handleSound()
             self.runAnimation()
         else:
             self.idleAnimation()
+
+    def handleSound(self):
+        if self.playSoundCnt >= 5:
+            self.moveSound.play()
+            self.playSoundCnt = 0
+        else:
+            self.playSoundCnt += 0.5
 
     def dash(self):
         pass
