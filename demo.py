@@ -1,9 +1,13 @@
 import pygame
 from player import Player
+from generic_enemy import GenericEnemy
 from sys import exit
 # Starts & intiates pygame
 pygame.init()
 playerO = Player(500, 500)
+enemyO = GenericEnemy(playerO)
+enemy = pygame.sprite.Group()
+enemy.add(enemyO)
 player = pygame.sprite.GroupSingle()
 player.add(playerO)
 WIDTH = 1366
@@ -48,6 +52,8 @@ while True:
     for i in range(0, HEIGHT, 16):
         for k in range(0, WIDTH, 16):
             screen.blit(floor_surface, (k, i))
+    enemy.draw(screen)
+    enemy.update()
     player.draw(screen)
     player.update()
     pygame.display.update()

@@ -29,7 +29,7 @@ class GenericEntity (pygame.sprite.Sprite):
     idleAnimation()  :loops in the array of idiling sprites to simulate idling
     handleAnimation():Calls the right type of animations (Still needs to handle other types of animations other than running an idling like attacking MUST be updated in the future)
     handleSound()    :Calls the right type of sound according to the action (Still not implemented)
-    move()           :to be overridden in the children classes just left the code cuz it will be needed
+    applyMove()      :when you change the velx and vely call this method to apply movement
     update()         :Calls move() and handleAnimation() (Will be updated when new actions are added)
     """
 
@@ -109,12 +109,11 @@ class GenericEntity (pygame.sprite.Sprite):
     def attack(self):
         pass
 
-    def move(self):
-        # needs to implemented
+    def applyMove(self):
         self.x += self.velX
         self.y += self.velY
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def update(self):
-        self.move()
+        self.applyMove()
         self.handleAnimation()

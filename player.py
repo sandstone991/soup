@@ -56,9 +56,7 @@ class Player(GenericEntity):
         if flagY:
             self.velY = 0
 
-        self.x += self.velX
-        self.y += self.velY
-        self.rect = self.image.get_rect(center=(self.x, self.y))
+        self.applyMove()
 
     def update(self):
         self.move()
