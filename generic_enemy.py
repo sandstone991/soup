@@ -38,6 +38,8 @@ class GenericEnemy(GenericEntity):
         self.attackRange = attackRange
         self.attackPower = attackPower
         self.distance = 99999999
+        self.listOfActions = [self.calculateDistance,
+                              self.attack, self.move, self.applyMove]
 
     def calculateDistance(self):
         self.distance = math.sqrt(
@@ -54,8 +56,6 @@ class GenericEnemy(GenericEntity):
             self.player.takeDamage(self.attackPower)
 
     def move(self):
-        self.calculateDistance()
-        self.attack()
         if self.isInRange(self.detectRange):
             dx, dy = self.player.x-self.x, self.player.y-self.y
             dist = math.hypot(dx, dy)

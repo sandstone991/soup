@@ -114,6 +114,10 @@ class GenericEntity (pygame.sprite.Sprite):
     def move(self):
         pass
 
+    def applyActions(self):
+        for i in range(len(self.listOfActions)):
+            self.listOfActions[i]()
+
     def applyMove(self):
         self.move()
         self.x += self.velX
@@ -129,6 +133,6 @@ class GenericEntity (pygame.sprite.Sprite):
             self.isAlive = False
 
     def update(self):
-        self.applyMove()
+        self.applyActions()
         self.handleAnimation()
 # Future changes -> make applyMove() apply actions an array of methods to be called

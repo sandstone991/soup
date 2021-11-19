@@ -29,6 +29,7 @@ class Player(GenericEntity):
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
+        self.listOfActions = [self.move, self.applyMove]
 
     def dash(self):
         pass
