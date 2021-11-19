@@ -29,11 +29,12 @@ class GenericEntity (pygame.sprite.Sprite):
     idleAnimation()  :loops in the array of idiling sprites to simulate idling
     handleAnimation():Calls the right type of animations (Still needs to handle other types of animations other than running an idling like attacking MUST be updated in the future)
     handleSound()    :Calls the right type of sound according to the action (Still not implemented)
-    applyMove()      :when you change the velx and vely call this method to apply movement
+    applyMove()      :Applies movement with values of x and y
+    move()           :To be implemented in child classes
     update()         :Calls move() and handleAnimation() (Will be updated when new actions are added)
     """
 
-    def __init__(self, x, y, running, idiling, sounds, scale, speed):
+    def __init__(self, x, y, running, idiling, sounds, scale, speed, health):
         super().__init__()
         # IMPORTING ALL SPRITES
         self.runRight = running
@@ -55,11 +56,12 @@ class GenericEntity (pygame.sprite.Sprite):
         self.playSoundCnt = 5
         self.x = x
         self.y = y
-        # temp
         self.rect = self.image.get_rect(midbottom=(x, y))
         self.velX = 0
         self.velY = 0
         self.speed = speed
+        self.health = health
+        self.isAlive = True
 
     def isRunning(self):
         if self.velX == 0 and self.velY == 0:
@@ -118,6 +120,15 @@ class GenericEntity (pygame.sprite.Sprite):
         self.y += self.velY
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
+    def takeDamage(self, damage):
+        self.health -= damage
+        self.isEntityAlive()
+
+    def isEntityAlive(self):
+        if self.health <= 0:
+            self.isAlive = False
+
     def update(self):
         self.applyMove()
         self.handleAnimation()
+# Future changes -> make applyMove() apply actions an array of methods to be called
