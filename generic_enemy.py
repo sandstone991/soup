@@ -11,23 +11,52 @@ idle = [pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), pygame.i
 
 
 class GenericEnemy(GenericEntity):
-    def __init__(self, player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, range=100):
-        super().__init__(x, y, running, idiling, sounds, scale, speed)
+    """
+    A class for all kinds of enemies to inherit from
+    maybe even instantiated from
+    Inherits from the GenericEntity class
+    ...
+
+    Attributes
+    ----------
+    detectRange: int -> represnt the range from which the enemy can detect the player
+    ----------
+
+    Methods
+    -------
+    move()     :Checks if player in range if in range changes velX and velY with basic vector operations
+    isInRange():Checks if player in range or not (Calculates euclidean distance and compares it with range)
+    -------
+    """
+
+    def __init__(self, player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=100, detectRange=100, attackRange=20, attackPower=5):
+        super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.player = player
         self.dx = 0
         self.dy = 0
-        self.range = range
+        self.detectRange = detectRange
+        self.attackRange = attackRange
+        self.attackPower = attackPower
+        self.distance = 99999999
 
-    def isInRange(self):
-        distance = math.sqrt((self.player.x-self.x)**2 +
-                             (self.player.y-self.y)**2)
-        if distance <= self.range:
+    def calculateDistance(self):
+        self.distance = math.sqrt(
+            (self.player.x-self.x)**2 + (self.player.y-self.y)**2)
+
+    def isInRange(self, range):
+        if self.distance <= range:
             return True
         else:
             return False
 
+    def attack(self):
+        if self.isInRange(self.attackRange):
+            self.player.takeDamage(self.attackPower)
+
     def move(self):
-        if self.isInRange():
+        self.calculateDistance()
+        self.attack()
+        if self.isInRange(self.detectRange):
             dx, dy = self.player.x-self.x, self.player.y-self.y
             dist = math.hypot(dx, dy)
             dx, dy = dx/dist, dy/dist

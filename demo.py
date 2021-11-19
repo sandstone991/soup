@@ -12,9 +12,6 @@ player = pygame.sprite.GroupSingle()
 player.add(playerO)
 WIDTH = 1366
 HEIGHT = 768
-# def Game:
-#     def __init__(self):
-
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Runner')
 # You can also change the icon
@@ -47,7 +44,6 @@ while True:
             if event.key == pygame.K_s:
                 playerO.down_pressed = False
     # draw all out elements
-    # update everything
     # Updates the display
     for i in range(0, HEIGHT, 16):
         for k in range(0, WIDTH, 16):
@@ -56,6 +52,7 @@ while True:
     enemy.update()
     player.draw(screen)
     player.update()
+    print(playerO.health)
     pygame.display.update()
     # Locks the frame rate at 60 fps
     clock.tick(60)

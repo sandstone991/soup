@@ -20,11 +20,11 @@ class Player(GenericEntity):
 
     Methods
     -------
-    move():overridden from the parent class/ takes input from the main game loop and changes position
+    move():takes input and transfroms it to speed in y or x
     """
 
-    def __init__(self, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3):
-        super().__init__(x, y, running, idiling, sounds, scale, speed)
+    def __init__(self, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100):
+        super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
