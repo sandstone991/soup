@@ -109,7 +109,11 @@ class GenericEntity (pygame.sprite.Sprite):
     def attack(self):
         pass
 
+    def move(self):
+        pass
+
     def applyMove(self):
+        self.move()
         self.x += self.velX
         self.y += self.velY
         self.rect = self.image.get_rect(center=(self.x, self.y))

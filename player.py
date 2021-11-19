@@ -55,9 +55,3 @@ class Player(GenericEntity):
             self.velX = 0
         if flagY:
             self.velY = 0
-
-        self.applyMove()
-
-    def update(self):
-        self.move()
-        self.handleAnimation()

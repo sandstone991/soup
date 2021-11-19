@@ -23,8 +23,3 @@ class GenericEnemy(GenericEntity):
         dx, dy = dx/dist, dy/dist
         self.velX = dx*self.speed
         self.velY = dy*self.speed
-        self.applyMove()
-
-    def update(self):
-        self.move()
-        self.handleAnimation()
