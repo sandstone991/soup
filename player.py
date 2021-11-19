@@ -23,8 +23,8 @@ class Player(GenericEntity):
     move():overridden from the parent class/ takes input from the main game loop and changes position
     """
 
-    def __init__(self, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40)):
-        super().__init__(x, y, running, idiling, sounds, scale)
+    def __init__(self, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3):
+        super().__init__(x, y, running, idiling, sounds, scale, speed)
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False

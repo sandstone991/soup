@@ -19,6 +19,7 @@ class GenericEntity (pygame.sprite.Sprite):
     idiling : list -> containing all the idling sprites 
     sounds  : str  -> containg the address of the walking sfx (still needs improvement/in the future it should contain a list of strings for all the sfx the entity should use not just walking)
     scale   : tuple-> containing the desired size of the sprite (width,height)
+    speed   : int  -> speed of the entity
 
     Methods
     -------
@@ -32,7 +33,7 @@ class GenericEntity (pygame.sprite.Sprite):
     update()         :Calls move() and handleAnimation() (Will be updated when new actions are added)
     """
 
-    def __init__(self, x, y, running, idiling, sounds, scale):
+    def __init__(self, x, y, running, idiling, sounds, scale, speed):
         super().__init__()
         # IMPORTING ALL SPRITES
         self.runRight = running
@@ -58,7 +59,7 @@ class GenericEntity (pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom=(x, y))
         self.velX = 0
         self.velY = 0
-        self.speed = 3
+        self.speed = speed
 
     def isRunning(self):
         if self.velX == 0 and self.velY == 0:
