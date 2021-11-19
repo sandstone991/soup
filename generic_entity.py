@@ -1,5 +1,6 @@
 
 import pygame
+from pygame import transform
 
 
 class GenericEntity (pygame.sprite.Sprite):
@@ -17,6 +18,7 @@ class GenericEntity (pygame.sprite.Sprite):
     running : list -> containing all the running sprites
     idiling : list -> containing all the idling sprites 
     sounds  : str  -> containg the address of the walking sfx (still needs improvement/in the future it should contain a list of strings for all the sfx the entity should use not just walking)
+    scale   : tuple-> containing the desired size of the sprite (width,height)
 
     Methods
     -------
@@ -30,16 +32,17 @@ class GenericEntity (pygame.sprite.Sprite):
     update()         :Calls move() and handleAnimation() (Will be updated when new actions are added)
     """
 
-    def __init__(self, x, y, running, idiling, sounds):
+    def __init__(self, x, y, running, idiling, sounds, scale):
         super().__init__()
         # IMPORTING ALL SPRITES
         self.runRight = running
+        self.runRight = [pygame.transform.scale(x, scale) for x in running]
         self.runLeft = [pygame.transform.flip(
             x, True, False) for x in self.runRight]
 
         self.runIndex = 0
         self.idleIndex = 0
-        self.idleRight = idiling
+        self.idleRight = [pygame.transform.scale(x, scale) for x in idiling]
         self.idleLeft = [pygame.transform.flip(
             x, True, False) for x in self.idleRight]
         self.runCurrent = self.runRight
