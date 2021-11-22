@@ -2,18 +2,20 @@ import pygame
 from player import Player
 from generic_enemy import GenericEnemy
 from sys import exit
+from weapon import Weapon
 # Starts & intiates pygame
 pygame.init()
-playerO = Player(500, 500)
+weaponO = Weapon()
+playerO = Player(weaponO)
 enemyO = GenericEnemy(playerO)
 enemy = pygame.sprite.Group()
 enemy.add(enemyO)
-player = pygame.sprite.GroupSingle()
-player.add(playerO)
+player = pygame.sprite.Group()
+player.add(playerO, weaponO)
 WIDTH = 1366
 HEIGHT = 768
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Runner')
+pygame.display.set_caption('Soup')
 # You can also change the icon
 clock = pygame.time.Clock()
 floor_surface = pygame.image.load('Textures/frames/floor_1.png').convert()
@@ -52,7 +54,6 @@ while True:
     enemy.update()
     player.draw(screen)
     player.update()
-    print(playerO.health)
     pygame.display.update()
     # Locks the frame rate at 60 fps
     clock.tick(60)

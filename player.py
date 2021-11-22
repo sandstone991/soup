@@ -1,6 +1,7 @@
 from os import X_OK
 import pygame
 from generic_entity import GenericEntity
+from weapon import Weapon
 run = [pygame.image.load('Textures/frames/knight_m_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f1.png'),
        pygame.image.load('Textures/frames/knight_m_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f3.png')]
 sound = 'audio/Player/player_walk.wav'
@@ -23,13 +24,14 @@ class Player(GenericEntity):
     move():takes input and transfroms it to speed in y or x
     """
 
-    def __init__(self, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100):
+    def __init__(self, weapon, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
-        self.listOfActions = [self.move, self.applyMove]
+        self.listOfActions = [self.move, self.applyMove, self.updateWeapon]
+        self.weapon = weapon
 
     def dash(self):
         pass
@@ -56,3 +58,8 @@ class Player(GenericEntity):
             self.velX = 0
         if flagY:
             self.velY = 0
+
+    def updateWeapon(self):
+        self.weapon.x = self.x+28
+        self.weapon.y = self.y+20
+        self.weapon.applyActions()

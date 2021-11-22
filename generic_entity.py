@@ -56,7 +56,7 @@ class GenericEntity (pygame.sprite.Sprite):
         self.playSoundCnt = 5
         self.x = x
         self.y = y
-        self.rect = self.image.get_rect(midbottom=(x, y))
+        self.rect = self.image.get_rect(center=(x, y))
         self.velX = 0
         self.velY = 0
         self.speed = speed
