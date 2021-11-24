@@ -11,7 +11,7 @@ enemyO = GenericEnemy(playerO)
 enemy = pygame.sprite.Group()
 enemy.add(enemyO)
 player = pygame.sprite.Group()
-player.add(playerO, weaponO)
+player.add(playerO)
 WIDTH = 1366
 HEIGHT = 768
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -45,15 +45,22 @@ while True:
                 playerO.up_pressed = False
             if event.key == pygame.K_s:
                 playerO.down_pressed = False
+        if event.type == pygame.MOUSEMOTION:
+            weaponO.rotation = True
+            weaponO.mx, weaponO.my = pygame.mouse.get_pos()
     # draw all out elements
     # Updates the display
     for i in range(0, HEIGHT, 16):
         for k in range(0, WIDTH, 16):
             screen.blit(floor_surface, (k, i))
+    # debug purposes
+
     enemy.draw(screen)
     enemy.update()
     player.draw(screen)
     player.update()
+    weaponO.update()
+    weaponO.draw(screen)
     pygame.display.update()
     # Locks the frame rate at 60 fps
     clock.tick(60)

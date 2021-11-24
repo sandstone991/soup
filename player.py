@@ -60,6 +60,7 @@ class Player(GenericEntity):
             self.velY = 0
 
     def updateWeapon(self):
-        self.weapon.x = self.x+28
-        self.weapon.y = self.y+20
+        self.weapon.pos = self.rect.topright
+        self.weapon.x = self.x
+        self.weapon.y = self.y
         self.weapon.applyActions()
