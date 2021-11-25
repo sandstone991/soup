@@ -31,7 +31,8 @@ class GenericEntity (pygame.sprite.Sprite):
     handleSound()    :Calls the right type of sound according to the action (Still not implemented)
     applyMove()      :Applies movement with values of x and y
     move()           :To be implemented in child classes
-    update()         :Calls move() and handleAnimation() (Will be updated when new actions are added)
+    applyActions()   :Runs all the logic required for the next frame before applying the animation required
+    update()         :Calls applyActions() and handleAnimation() (Will be updated when new actions are added)
     """
 
     def __init__(self, x, y, running, idiling, sounds, scale, speed, health):

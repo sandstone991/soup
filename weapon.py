@@ -7,6 +7,26 @@ texture = pygame.image.load("Textures/frames/weapon_knight_sword.png")
 
 
 class Weapon(pygame.sprite.Sprite):
+    """
+    A class to represnt a weapon to be carried by the player
+    future improvement may give other entites the ability to carry a weapon too
+    ...
+
+    Attributes
+    ----------
+    Texture : pygame.image -> the image of the weapon
+    scale: tuple -> not implemented yet
+    range: int   -> the range in which the weapon will move in a circle around the player in
+
+
+    Methods
+    -------
+    getRotationAngle(): calculates the angle of rotation for the weapon depending on the players current position and the mouses position when the mouse is moving
+    only runs if self.rotation is set to true. self.rotation can be set to true if the mouse is moving in the game event loop
+    rotate():In a dire need for a better implementation but it kinda works basically rotates and moves the weapon in circle once its done it sets rotation to false
+    draw():Overridden to work 
+    """
+
     def __init__(self, texture=texture, scale=(12, 20), range=10):
         super().__init__()
         self.image = texture

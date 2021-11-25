@@ -45,6 +45,7 @@ while True:
                 playerO.up_pressed = False
             if event.key == pygame.K_s:
                 playerO.down_pressed = False
+        # check for mouse movement and changes rotation true when moving as we don't want the weapon to follow the mouse when the mouse isn't moving
         if event.type == pygame.MOUSEMOTION:
             weaponO.rotation = True
             weaponO.mx, weaponO.my = pygame.mouse.get_pos()

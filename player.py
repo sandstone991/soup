@@ -22,6 +22,7 @@ class Player(GenericEntity):
     Methods
     -------
     move():takes input and transfroms it to speed in y or x
+    updateWeapons(): gives the weapon the current player coords
     """
 
     def __init__(self, weapon, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100):
