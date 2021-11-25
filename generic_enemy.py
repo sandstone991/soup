@@ -3,11 +3,11 @@ import math
 
 from generic_entity import GenericEntity
 # temporary spirtes for testing please DELETE
-run = [pygame.image.load('Textures/frames/knight_m_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f1.png'),
-       pygame.image.load('Textures/frames/knight_m_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f3.png')]
+idle = [pygame.image.load('Textures/frames/big_demon_idle_anim_f0.png'), pygame.image.load('Textures/frames/big_demon_idle_anim_f1.png'),
+        pygame.image.load('Textures/frames/big_demon_idle_anim_f2.png'), pygame.image.load('Textures/frames/big_demon_idle_anim_f3.png')]
 sound = 'audio/Player/player_walk.wav'
-idle = [pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f1.png'),
-        pygame.image.load('Textures/frames/knight_m_idle_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f3.png')]
+run = [pygame.image.load('Textures/frames/big_demon_run_anim_f0.png'), pygame.image.load('Textures/frames/big_demon_run_anim_f1.png'),
+       pygame.image.load('Textures/frames/big_demon_run_anim_f2.png'), pygame.image.load('Textures/frames/big_demon_run_anim_f3.png')]
 
 
 class GenericEnemy(GenericEntity):
@@ -34,12 +34,15 @@ class GenericEnemy(GenericEntity):
         self.player = player
         self.dx = 0
         self.dy = 0
+        self.attacking = False
+        self.coolDownTimer = 1
+        self.attackCoolDown = 100
         self.detectRange = detectRange
         self.attackRange = attackRange
         self.attackPower = attackPower
         self.distance = 99999999
         self.listOfActions = [self.calculateDistance,
-                              self.attack, self.move, self.applyMove]
+                              self.isInAttackRange, self.move, self.applyMove]
 
     def calculateDistance(self):
         self.distance = math.sqrt(
@@ -51,17 +54,31 @@ class GenericEnemy(GenericEntity):
         else:
             return False
 
+    def isInAttackRange(self):
+
+        if self.isInRange(self.attackRange):
+            self.velX = 0
+            self.velY = 0
+            self.attacking = True
+
     def attack(self):
         if self.isInRange(self.attackRange):
             self.player.takeDamage(self.attackPower)
 
     def move(self):
-        if self.isInRange(self.detectRange):
-            dx, dy = self.player.x-self.x, self.player.y-self.y
-            dist = math.hypot(dx, dy)
-            dx, dy = dx/dist, dy/dist
-            self.velX = dx*self.speed
-            self.velY = dy*self.speed
+        if not self.attacking:
+            if self.isInRange(self.detectRange):
+                dx, dy = self.player.x-self.x, self.player.y-self.y
+                dist = math.hypot(dx, dy)
+                dx, dy = dx/dist, dy/dist
+                self.velX = dx*self.speed
+                self.velY = dy*self.speed
+            else:
+                self.velX = 0
+                self.velY = 0
         else:
-            self.velX = 0
-            self.velY = 0
+            if self.coolDownTimer > self.attackCoolDown:
+                self.attacking = False
+                self.coolDownTimer = 0
+            else:
+                self.coolDownTimer += 1

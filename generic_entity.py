@@ -79,7 +79,7 @@ class GenericEntity (pygame.sprite.Sprite):
             self.idleCurrent = self.idleRight
 
     def runAnimation(self):
-        if self.runIndex > 3:
+        if self.runIndex > 3.8:
             self.runIndex = 0
         else:
             self.runIndex += 0.2
@@ -87,7 +87,7 @@ class GenericEntity (pygame.sprite.Sprite):
         self.image = self.runCurrent[int(self.runIndex)]
 
     def idleAnimation(self):
-        if self.idleIndex > 3:
+        if self.idleIndex >= 3.9:
             self.idleIndex = 0
         else:
             self.idleIndex += 0.1
