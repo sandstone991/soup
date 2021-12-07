@@ -1,12 +1,10 @@
 import pygame
 import math
-import time,datetime
 
 from pygame import Vector2, rect
 from pygame import image
-from pygame.mixer import Sound
 texture = pygame.image.load("Textures/frames/weapon_knight_sword.png")
-sound = 'audio/weapon/mixkit-fast-sword-whoosh-2792.wav'
+
 
 class Weapon(pygame.sprite.Sprite):
     """
@@ -39,14 +37,9 @@ class Weapon(pygame.sprite.Sprite):
         self.mx = 0
         self.my = 0
         self.rotation = False
-        self.attackFlag = False
-        self.timerFlag = True
         self.pos = Vector2(0, 0)
         self.rect = self.CurrentImage.get_rect(center=(0, 0))
-        self.listOfActions = [self.getRotationAngle, self.rotate, self.weaponAttack]
-        self.swordSound = pygame.mixer.Sound(sound)
-        self.swordSound.set_volume(.4)
-        self.timer_stop = datetime.datetime.utcnow() +datetime.timedelta(seconds=0)
+        self.listOfActions = [self.getRotationAngle, self.rotate]
 
     def getRotationAngle(self):
         if self.rotation:
@@ -55,8 +48,8 @@ class Weapon(pygame.sprite.Sprite):
 
     def rotate(self):
         self.CurrentImage = pygame.transform.rotate(self.image, self.angle)
-        x = self.x + 15 * math.cos(self.angle/60+1)+5  # Starting position x
-        y = self.y - 15 * math.sin(self.angle/60+1)+10  # Starting position y
+        x = self.x + 15 * math.cos(self.angle/60+1)  # Starting position x
+        y = self.y - 15 * math.sin(self.angle/60+1)  # Starting position y
         self.rect = self.CurrentImage.get_rect(center=(x, y))
         self.rotation = False
 
@@ -69,20 +62,3 @@ class Weapon(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.CurrentImage, self.rect)
-    
-    def weaponAttack(self):
-        if self.attackFlag and self.timerFlag:
-            print('sss')
-            self.swordSound.play()
-            self.CurrentImage = pygame.transform.rotate(self.image, -60+self.angle)
-            x = self.x + 15 * math.cos((-60+self.angle)/60+1)+5  # Starting position x
-            y = self.y - 15 * math.sin((-60+self.angle)/60+1)+10  # Starting position y
-            self.rect = self.CurrentImage.get_rect(center=(x,y))
-            self.rotation = False
-    def attackDelay(self):
-        self.timerFlag = False
-        if datetime.datetime.utcnow() > self.timer_stop:
-            self.resetDelay()
-    def resetDelay(self):
-        self.timer_stop = datetime.datetime.utcnow() +datetime.timedelta(seconds=1)
-        self.timerFlag = True
