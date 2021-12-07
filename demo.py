@@ -1,3 +1,4 @@
+from typing import Counter
 import pygame
 from player import Player
 from generic_enemy import GenericEnemy
@@ -49,6 +50,13 @@ while True:
         if event.type == pygame.MOUSEMOTION:
             weaponO.rotation = True
             weaponO.mx, weaponO.my = pygame.mouse.get_pos()
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print('ttt')
+            weaponO.attackFlag = True
+            weaponO.attackDelay()
+        if event.type == pygame.MOUSEBUTTONUP:
+            weaponO.attackFlag = False
     # draw all out elements
     # Updates the display
     for i in range(0, HEIGHT, 16):
