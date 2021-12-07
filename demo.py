@@ -49,6 +49,12 @@ while True:
         if event.type == pygame.MOUSEMOTION:
             weaponO.rotation = True
             weaponO.mx, weaponO.my = pygame.mouse.get_pos()
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            weaponO.attackFlag = True
+            weaponO.attackDelay()
+        if event.type == pygame.MOUSEBUTTONUP:
+            weaponO.attackFlag = False
     # draw all out elements
     # Updates the display
     for i in range(0, HEIGHT, 16):
