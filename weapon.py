@@ -31,7 +31,7 @@ class Weapon(pygame.sprite.Sprite):
     draw():Overridden to work 
     """
 
-    def __init__(self, texture=texture, scale=(12, 20), range=10, sound=sound):
+    def __init__(self, texture=texture, scale=(3, 5), range=10, sound=sound):
         super().__init__()
         self.image = texture
         self.CurrentImage = texture
