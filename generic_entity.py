@@ -63,7 +63,7 @@ class GenericEntity (pygame.sprite.Sprite):
         self.speed = speed
         self.health = health
         self.isAlive = True
-        self.direction = 'LEFT'
+        self.direction = 'RIGHT'
     def isRunning(self):
         if self.velX == 0 and self.velY == 0:
             return False
