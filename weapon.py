@@ -6,6 +6,7 @@ import datetime
 from pygame import Vector2, rect
 from pygame import image
 from pygame.mixer import Sound
+from pygame.transform import rotate
 texture = pygame.image.load("Textures/frames/weapon_knight_sword.png")
 sound = 'audio/weapon/mixkit-fast-sword-whoosh-2792.wav'
 
@@ -31,7 +32,7 @@ class Weapon(pygame.sprite.Sprite):
     draw():Overridden to work 
     """
 
-    def __init__(self, texture=texture, scale=(12, 20), range=10, sound=sound):
+    def __init__(self, texture=texture, scale=(3, 5), range=10, sound=sound):
         super().__init__()
         self.image = texture
         self.CurrentImage = texture
@@ -41,30 +42,34 @@ class Weapon(pygame.sprite.Sprite):
         self.mx = 0
         self.my = 0
         self.rotation = False
-        self.attackFlag = False
+        self.attackFlag = 0
         self.timerFlag = True
+        self.direction= 'LEFT'
         self.pos = Vector2(0, 0)
         self.attackAngle = 0  # angle to be rotated to when attack is activated
         self.attackAnimationCounter = 0
         self.rect = self.CurrentImage.get_rect(center=(0, 0))
         self.listOfActions = [self.getRotationAngle,
-                              self.rotate, self.weaponAttack, ]
+                              self.rotateMove,self.mouseAntiHold,self.weaponAttack ]
         self.swordSound = pygame.mixer.Sound(sound)
-        self.swordSound.set_volume(.1)
+        self.swordSound.set_volume(.4)
         self.timer_stop = datetime.datetime.utcnow() + datetime.timedelta(seconds=0)
 
     def getRotationAngle(self):
         if self.rotation:
             rel_x, rel_y = self.mx - self.x, self.my - self.y
             self.angle = (180 / math.pi) * -math.atan2(rel_y, rel_x)
-
-    def rotate(self):
-        self.CurrentImage = pygame.transform.rotate(self.image, self.angle)
+    def rotateGeneral(self,angle):
+        self.CurrentImage = pygame.transform.rotate(self.image, angle)
         # Starting position x
-        x = self.x + 15 * math.cos(self.angle/60+1)+5
+        x = self.x + 15 * math.cos(angle/60+1)+5
         # Starting position y
-        y = self.y - 15 * math.sin(self.angle/60+1)+10
+        y = self.y - 15 * math.sin(angle/60+1)+10
         self.rect = self.CurrentImage.get_rect(center=(x, y))
+
+
+    def rotateMove(self):
+        self.rotateGeneral(self.angle)
         self.rotation = False
 
     def applyActions(self):
@@ -79,14 +84,11 @@ class Weapon(pygame.sprite.Sprite):
 
     def attackAnimation(self):
         if self.attackAnimationCounter != 0:
-            self.attackAngle -= 10
-            self.CurrentImage = pygame.transform.rotate(
-                self.image, self.attackAngle)
-            # Starting position x
-            x = self.x + 15 * math.cos((self.attackAngle)/60+1)+5
-            # Starting position y
-            y = self.y - 15 * math.sin((self.attackAngle)/60+1)+10
-            self.rect = self.CurrentImage.get_rect(center=(x, y))
+            if self.direction == 'RIGHT':
+                self.attackAngle -= 10
+            else:
+                self.attackAngle +=10
+            self.rotateGeneral(self.attackAngle)
             self.attackAnimationCounter += 1
             if self.attackAnimationCounter == 6:
                 self.attackAnimationCounter = 0
@@ -102,7 +104,11 @@ class Weapon(pygame.sprite.Sprite):
             self.attackAnimationCounter = 6
             self.attackAngle = self.angle
             self.resetDelay()
-
+    def mouseAntiHold(self):
+        if self.attackFlag!=0:
+            self.attackFlag-=1
+        else:
+            self.attackFlag = 0
     def resetDelay(self):
         self.timer_stop = datetime.datetime.utcnow() + datetime.timedelta(seconds=.2)
         self.timerFlag = True
