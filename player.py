@@ -1,7 +1,9 @@
 from os import X_OK
 import pygame
+from math import sqrt
 from generic_entity import GenericEntity
 from weapon import Weapon
+from generic_enemy import GenericEnemy
 run = [pygame.image.load('Textures/frames/knight_m_run_anim_f0.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f1.png'),
        pygame.image.load('Textures/frames/knight_m_run_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_run_anim_f3.png')]
 sound = 'audio/Player/player_walk.wav'
@@ -31,14 +33,23 @@ class Player(GenericEntity):
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
-        self.listOfActions = [self.move, self.applyMove, self.updateWeapon]
+        self.listOfActions = [self.move, self.applyMove, self.updateWeapon,self.attack]
         self.weapon = weapon
 
     def dash(self):
-        pass
+        pass   
+    
 
-    def attack(self):
-        pass
+    # def calculateDistance(self):
+    #     self.distance = sqrt(
+    #         (self.player.x-x)**2 + (self.player.y-y)**2)
+    #     print(self.distance)
+
+    # def attack(self):
+    #     # attack func
+    #     if self.weapon.attackFlag == 19:
+    #         if pygame.Rect.colliderect(self.rect,self.rect):
+    #             print('kk')
 
     def move(self):
         flagX = 1

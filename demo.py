@@ -56,8 +56,9 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             weaponO.attackFlag = 20
             weaponO.attackDelay()
+            enemyO.zebyFlag = 5
 
-
+        
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 ui0.paused()
 

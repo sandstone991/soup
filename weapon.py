@@ -1,3 +1,4 @@
+from sys import platform
 import pygame
 import math
 import time
@@ -7,6 +8,10 @@ from pygame import Vector2, rect
 from pygame import image
 from pygame.mixer import Sound
 from pygame.transform import rotate
+
+# from player import Player
+from generic_entity import GenericEntity
+
 texture = pygame.image.load("Textures/frames/weapon_knight_sword.png")
 sound = 'audio/weapon/mixkit-fast-sword-whoosh-2792.wav'
 
@@ -92,11 +97,12 @@ class Weapon(pygame.sprite.Sprite):
             self.attackAnimationCounter += 1
             if self.attackAnimationCounter == 6:
                 self.attackAnimationCounter = 0
-
+    
     def weaponAttack(self):
         if self.attackFlag and self.timerFlag:
             self.swordSound.play()
             self.attackAnimation()
+            
 
     def attackDelay(self):
         self.timerFlag = False

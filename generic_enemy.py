@@ -40,9 +40,10 @@ class GenericEnemy(GenericEntity):
         self.detectRange = detectRange
         self.attackRange = attackRange
         self.attackPower = attackPower
+        self.zebyFlag = 0
         self.distance = 99999999
         self.listOfActions = [self.calculateDistance,
-                              self.isInAttackRange, self.move, self.applyMove]
+                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl]
 
     def calculateDistance(self):
         self.distance = math.sqrt(
@@ -54,6 +55,18 @@ class GenericEnemy(GenericEntity):
         else:
             return False
 
+    def playerAttack(self):
+        if self.distance <= 20 and self.zebyFlag:
+            self.takeDamage(1)
+            print(self.health)
+
+
+    def damageControl(self):
+        if self.zebyFlag!=0:
+            self.zebyFlag-=1
+        else:
+            self.zebyFlag= 0
+        
     def isInAttackRange(self):
 
         if self.isInRange(self.attackRange):
