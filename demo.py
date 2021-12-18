@@ -3,8 +3,9 @@ from player import Player
 from generic_enemy import GenericEnemy
 from sys import exit
 from weapon import Weapon
-from ui import Ui, Start
-from ui import GameOver, Images
+from setting import*
+from level import Level
+from game_data import level_0
 # Starts & intiates pygame
 pygame.init()
 weaponO = Weapon()
@@ -26,6 +27,8 @@ ui0 = Ui(screen, WIDTH, HEIGHT, floor_surface, started)
 start = Start(screen, WIDTH, HEIGHT, floor_surface, started)
 over = GameOver(screen, WIDTH, HEIGHT, floor_surface, started)
 img = Images()
+level=Level(level_0,screen)
+speed =5
 #running = True
 game_over = True
 
@@ -42,21 +45,29 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 playerO.left_pressed = True
+                level.x_scroll+=speed
             if event.key == pygame.K_d:
                 playerO.right_pressed = True
+                level.x_scroll -= speed
             if event.key == pygame.K_w:
                 playerO.up_pressed = True
+                level.y_scroll -= speed
             if event.key == pygame.K_s:
                 playerO.down_pressed = True
+                level.y_scroll += speed
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 playerO.left_pressed = False
+                level.x_scroll=0
             if event.key == pygame.K_d:
                 playerO.right_pressed = False
+                level.x_scroll=0
             if event.key == pygame.K_w:
                 playerO.up_pressed = False
+                level.y_scroll=0
             if event.key == pygame.K_s:
                 playerO.down_pressed = False
+                level.y_scroll=0
         # check for mouse movement and changes rotation true when moving as we don't want the weapon to follow the mouse when the mouse isn't moving
         if event.type == pygame.MOUSEMOTION:
             weaponO.rotation = True
@@ -70,9 +81,8 @@ while True:
             ui0.paused()
     # draw all out elements
     # Updates the display
-    for i in range(0, HEIGHT, 16):
-        for k in range(0, WIDTH, 16):
-            screen.blit(floor_surface, (k, i))
+   
+    screen.fill('black')
     # debug purposes
     # screen.blit(pygame.transform.scale(img.pause_surface,(50,50)),(WIDTH-50,0))
     start.startUi()
@@ -83,6 +93,7 @@ while True:
     player.update()
     weaponO.update()
     weaponO.draw(screen)
+    level.run()
     pygame.display.update()
     # Locks the frame rate at 60 fps
     # not very clean code
