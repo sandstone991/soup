@@ -3,14 +3,9 @@ from player import Player
 from generic_enemy import GenericEnemy
 from sys import exit
 from weapon import Weapon
-<<<<<<< HEAD
 from setting import*
 from level import Level
 from game_data import level_0
-=======
-from ui import Ui, Start
-from ui import GameOver, Images
->>>>>>> 43470b4172915df7e7a35ab4fa3d2a81f4c6493a
 # Starts & intiates pygame
 pygame.init()
 weaponO = Weapon()
@@ -20,29 +15,23 @@ enemy = pygame.sprite.Group()
 enemy.add(enemyO)
 player = pygame.sprite.Group()
 player.add(playerO)
-<<<<<<< HEAD
-=======
 WIDTH = 1366
 HEIGHT = 768
 started = True
->>>>>>> 43470b4172915df7e7a35ab4fa3d2a81f4c6493a
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Soup')
 # You can also change the icon
 clock = pygame.time.Clock()
 floor_surface = pygame.image.load('Textures/frames/floor_1.png').convert()
-<<<<<<< HEAD
-level = Level(level_0,screen)
-speed = 5
-=======
 ui0 = Ui(screen, WIDTH, HEIGHT, floor_surface, started)
 start = Start(screen, WIDTH, HEIGHT, floor_surface, started)
 over = GameOver(screen, WIDTH, HEIGHT, floor_surface, started)
 img = Images()
+level=Level(level_0,screen)
+speed =5
 #running = True
 game_over = True
 
->>>>>>> 43470b4172915df7e7a35ab4fa3d2a81f4c6493a
 while True:
     # if game_over:
     #     over.gameOver()
