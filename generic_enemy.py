@@ -28,10 +28,11 @@ class GenericEnemy(GenericEntity):
     isInRange():Checks if player in range or not (Calculates euclidean distance and compares it with range)
     -------
     """
+    playerCoords = (0, 0)
 
-    def __init__(self, player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=100, detectRange=100, attackRange=20, attackPower=5):
+    def __init__(self, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=100, detectRange=100, attackRange=20, attackPower=5):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
-        self.player = player
+        self.playerCoords = (0, 0)
         self.dx = 0
         self.dy = 0
         self.attacking = False
@@ -40,19 +41,33 @@ class GenericEnemy(GenericEntity):
         self.detectRange = detectRange
         self.attackRange = attackRange
         self.attackPower = attackPower
+        self.damageFlag = 0
         self.distance = 99999999
         self.listOfActions = [self.calculateDistance,
-                              self.isInAttackRange, self.move, self.applyMove]
+                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl]
 
     def calculateDistance(self):
         self.distance = math.sqrt(
-            (self.player.x-self.x)**2 + (self.player.y-self.y)**2)
+            (self.playerCoords[0]-self.x)**2 + (self.playerCoords[1]-self.y)**2)
 
     def isInRange(self, range):
         if self.distance <= range:
             return True
         else:
             return False
+        # check if the player attcks the enemy, in case of attacing -> do some damage to the enemy
+
+    def playerAttack(self):
+        if self.distance <= 20 and self.damageFlag:
+            self.takeDamage(1)
+            print(self.health)
+
+        # holding the damage rate (to avoid some other bugs)
+    def damageControl(self):
+        if self.damageFlag != 0:
+            self.damageFlag -= 1
+        else:
+            self.damageFlag = 0
 
     def isInAttackRange(self):
 
@@ -82,3 +97,6 @@ class GenericEnemy(GenericEntity):
                 self.coolDownTimer = 0
             else:
                 self.coolDownTimer += 1
+
+    def getPlayerCoords(self, coords):
+        self.playerCoords = coords

@@ -63,7 +63,7 @@ class GenericEntity (pygame.sprite.Sprite):
         self.speed = speed
         self.health = health
         self.isAlive = True
-
+        self.direction = 'RIGHT'
     def isRunning(self):
         if self.velX == 0 and self.velY == 0:
             return False
@@ -74,10 +74,11 @@ class GenericEntity (pygame.sprite.Sprite):
         if self.velX < 0:
             self.runCurrent = self.runLeft
             self.idleCurrent = self.idleLeft
+            self.direction = 'LEFT'
         elif self.velX > 0:
             self.runCurrent = self.runRight
             self.idleCurrent = self.idleRight
-
+            self.direction='RIGHT'
     def runAnimation(self):
         if self.runIndex > 3.8:
             self.runIndex = 0
@@ -128,10 +129,11 @@ class GenericEntity (pygame.sprite.Sprite):
     def takeDamage(self, damage):
         self.health -= damage
         self.isEntityAlive()
-
+        
     def isEntityAlive(self):
         if self.health <= 0:
             self.isAlive = False
+            self.health = 0
 
     def update(self):
         self.applyActions()
