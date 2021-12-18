@@ -33,7 +33,6 @@ while True:
     # if game_over:
     #     over.gameOver()
     #     game_over = False
-    start.startUi()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -67,7 +66,6 @@ while True:
             weaponO.attackDelay()
         if event.type == pygame.MOUSEBUTTONUP:
             weaponO.attackFlag = False
-
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             ui0.paused()
     # draw all out elements
@@ -77,6 +75,7 @@ while True:
             screen.blit(floor_surface, (k, i))
     # debug purposes
     # screen.blit(pygame.transform.scale(img.pause_surface,(50,50)),(WIDTH-50,0))
+    start.startUi()
     ui0.health()
     enemy.draw(screen)
     enemy.update()

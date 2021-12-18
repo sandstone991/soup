@@ -49,13 +49,13 @@ class Weapon(pygame.sprite.Sprite):
         self.rotation = False
         self.attackFlag = 0
         self.timerFlag = True
-        self.direction= 'LEFT'
+        self.direction = 'LEFT'
         self.pos = Vector2(0, 0)
         self.attackAngle = 0  # angle to be rotated to when attack is activated
         self.attackAnimationCounter = 0
         self.rect = self.CurrentImage.get_rect(center=(0, 0))
         self.listOfActions = [self.getRotationAngle,
-                              self.rotateMove,self.mouseAntiHold,self.weaponAttack ]
+                              self.rotateMove, self.mouseAntiHold, self.weaponAttack]
         self.swordSound = pygame.mixer.Sound(sound)
         self.swordSound.set_volume(.4)
         self.timer_stop = datetime.datetime.utcnow() + datetime.timedelta(seconds=0)
@@ -64,14 +64,14 @@ class Weapon(pygame.sprite.Sprite):
         if self.rotation:
             rel_x, rel_y = self.mx - self.x, self.my - self.y
             self.angle = (180 / math.pi) * -math.atan2(rel_y, rel_x)
-    def rotateGeneral(self,angle):
+
+    def rotateGeneral(self, angle):
         self.CurrentImage = pygame.transform.rotate(self.image, angle)
         # Starting position x
         x = self.x + 15 * math.cos(angle/60+1)+5
         # Starting position y
         y = self.y - 15 * math.sin(angle/60+1)+10
         self.rect = self.CurrentImage.get_rect(center=(x, y))
-
 
     def rotateMove(self):
         self.rotateGeneral(self.angle)
@@ -86,23 +86,24 @@ class Weapon(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.CurrentImage, self.rect)
-    
+
     def attackAnimation(self):
         if self.attackAnimationCounter != 0:
             if self.direction == 'RIGHT':
                 self.attackAngle -= 10
             else:
-                self.attackAngle +=10
+                self.attackAngle += 10
             self.rotateGeneral(self.attackAngle)
             self.attackAnimationCounter += 1
             if self.attackAnimationCounter == 6:
                 self.attackAnimationCounter = 0
     # the functoinlity of attacking such as attack sound effect and attack animation
+
     def weaponAttack(self):
         if self.attackFlag and self.timerFlag:
             self.swordSound.play()
             self.attackAnimation()
-            
+
     # make a delay between each attack and invokes other attack functionality
     def attackDelay(self):
         self.timerFlag = False
@@ -110,14 +111,15 @@ class Weapon(pygame.sprite.Sprite):
             self.attackAnimationCounter = 6
             self.attackAngle = self.angle
             self.resetDelay()
-    
-    # make the attck happened one time per click (i.e not responding to long click) 
+
+    # make the attck happened one time per click (i.e not responding to long click)
     def mouseAntiHold(self):
-        if self.attackFlag!=0:
-            self.attackFlag-=1
+        if self.attackFlag != 0:
+            self.attackFlag -= 1
         else:
             self.attackFlag = 0
-    # reset the attacking delay everty 0.2 seconds 
+    # reset the attacking delay everty 0.2 seconds
+
     def resetDelay(self):
         self.timer_stop = datetime.datetime.utcnow() + datetime.timedelta(seconds=.2)
         self.timerFlag = True
