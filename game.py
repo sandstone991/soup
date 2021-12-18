@@ -23,7 +23,7 @@ class Game:
         self.screen = None
         self.initEnemies()
         self.initScreen()
-        self.initUi()
+        # self.initUi()
         self.clock = pygame.time.Clock()
 
     def initUi(self):
@@ -37,7 +37,7 @@ class Game:
 
     def initEnemies(self):
         # This function is only temporary to be replaced with whatever function AWWAD comes up with
-        for i in range(10):
+        for i in range(1):
             self.enemies.add(GenericEnemy())
 
     def initScreen(self):
@@ -58,39 +58,33 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            self.playerEvents(event)
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                self.ui.paused()
-
-    def weaponEvent(self, event):
-        if event.type == pygame.MOUSEMOTION:
-            self.currentWeapon.rotation = True
-            self.currentWeapon.mx,  self.currentWeapon.my = pygame.mouse.get_pos()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            self.currentWeapon.attackFlag = 20
-            self.currentWeapon.attackDelay()
-            #enemyO.damageFlag = 5
-
-    def playerEvents(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                self.playerObject.left_pressed = True
-            if event.key == pygame.K_d:
-                self.playerObject.right_pressed = True
-            if event.key == pygame.K_w:
-                self.playerObject.up_pressed = True
-            if event.key == pygame.K_s:
-                self.playerObject.down_pressed = True
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                self.playerObject.left_pressed = False
-            if event.key == pygame.K_d:
-                self.playerObject.right_pressed = False
-            if event.key == pygame.K_w:
-                self.playerObject.up_pressed = False
-            if event.key == pygame.K_s:
-                self.playerObject.down_pressed = False
-        self.weaponEvent(event)
+            # if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            #     self.ui.paused()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    self.playerObject.left_pressed = True
+                if event.key == pygame.K_d:
+                    self.playerObject.right_pressed = True
+                if event.key == pygame.K_w:
+                    self.playerObject.up_pressed = True
+                if event.key == pygame.K_s:
+                    self.playerObject.down_pressed = True
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_a:
+                    self.playerObject.left_pressed = False
+                if event.key == pygame.K_d:
+                    self.playerObject.right_pressed = False
+                if event.key == pygame.K_w:
+                    self.playerObject.up_pressed = False
+                if event.key == pygame.K_s:
+                    self.playerObject.down_pressed = False
+            if event.type == pygame.MOUSEMOTION:
+                self.currentWeapon.rotation = True
+                self.currentWeapon.mx,  self.currentWeapon.my = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.currentWeapon.attackFlag = 20
+                self.currentWeapon.attackDelay()
+                #enemyO.damageFlag = 5
 
     def draw(self):
         for i in range(0, self.HEIGHT, 16):
@@ -98,8 +92,8 @@ class Game:
                 self.screen.blit(self.floor_surface, (k, i))
         # debug purposes
         # screen.blit(pygame.transform.scale(img.pause_surface,(50,50)),(WIDTH-50,0))
-        self.start.startUi()
-        self.ui.health()
+        # self.start.startUi()
+        # self.ui.health()
         self.enemies.draw(self.screen)
         self.enemies.update()
         self.drawPlayer()

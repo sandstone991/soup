@@ -4,6 +4,7 @@ from generic_enemy import GenericEnemy
 from sys import exit
 from weapon import Weapon
 from setting import*
+from ui import*
 from level import Level
 from game_data import level_0
 # Starts & intiates pygame
@@ -27,8 +28,8 @@ ui0 = Ui(screen, WIDTH, HEIGHT, floor_surface, started)
 start = Start(screen, WIDTH, HEIGHT, floor_surface, started)
 over = GameOver(screen, WIDTH, HEIGHT, floor_surface, started)
 img = Images()
-level=Level(level_0,screen)
-speed =5
+level = Level(level_0, screen)
+speed = 5
 #running = True
 game_over = True
 
@@ -45,7 +46,7 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 playerO.left_pressed = True
-                level.x_scroll+=speed
+                level.x_scroll += speed
             if event.key == pygame.K_d:
                 playerO.right_pressed = True
                 level.x_scroll -= speed
@@ -58,16 +59,16 @@ while True:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 playerO.left_pressed = False
-                level.x_scroll=0
+                level.x_scroll = 0
             if event.key == pygame.K_d:
                 playerO.right_pressed = False
-                level.x_scroll=0
+                level.x_scroll = 0
             if event.key == pygame.K_w:
                 playerO.up_pressed = False
-                level.y_scroll=0
+                level.y_scroll = 0
             if event.key == pygame.K_s:
                 playerO.down_pressed = False
-                level.y_scroll=0
+                level.y_scroll = 0
         # check for mouse movement and changes rotation true when moving as we don't want the weapon to follow the mouse when the mouse isn't moving
         if event.type == pygame.MOUSEMOTION:
             weaponO.rotation = True
@@ -81,11 +82,11 @@ while True:
             ui0.paused()
     # draw all out elements
     # Updates the display
-   
+
     screen.fill('black')
     # debug purposes
     # screen.blit(pygame.transform.scale(img.pause_surface,(50,50)),(WIDTH-50,0))
-    start.startUi()
+    # start.startUi()
     ui0.health()
     enemy.draw(screen)
     enemy.update()

@@ -21,14 +21,11 @@ class Weapon(pygame.sprite.Sprite):
     A class to represnt a weapon to be carried by the player
     future improvement may give other entites the ability to carry a weapon too
     ...
-
     Attributes
     ----------
     Texture : pygame.image -> the image of the weapon
     scale: tuple -> not implemented yet
     range: int   -> the range in which the weapon will move in a circle around the player in
-
-
     Methods
     -------
     getRotationAngle(): calculates the angle of rotation for the weapon depending on the players current position and the mouses position when the mouse is moving

@@ -9,7 +9,6 @@ class GenericEntity (pygame.sprite.Sprite):
     this entity could be the player or an enemy
     Please note this is an interface and should not be instantied from
     ...
-
     Attributes
     ----------
     (can change in the future when new features are added)
@@ -20,7 +19,6 @@ class GenericEntity (pygame.sprite.Sprite):
     sounds  : str  -> containg the address of the walking sfx (still needs improvement/in the future it should contain a list of strings for all the sfx the entity should use not just walking)
     scale   : tuple-> containing the desired size of the sprite (width,height)
     speed   : int  -> speed of the entity
-
     Methods
     -------
     isRunning()      :Checks whether or not the entity is currently running or not return true if running and false otherwise
@@ -64,6 +62,7 @@ class GenericEntity (pygame.sprite.Sprite):
         self.health = health
         self.isAlive = True
         self.direction = 'RIGHT'
+
     def isRunning(self):
         if self.velX == 0 and self.velY == 0:
             return False
@@ -78,7 +77,8 @@ class GenericEntity (pygame.sprite.Sprite):
         elif self.velX > 0:
             self.runCurrent = self.runRight
             self.idleCurrent = self.idleRight
-            self.direction='RIGHT'
+            self.direction = 'RIGHT'
+
     def runAnimation(self):
         if self.runIndex > 3.8:
             self.runIndex = 0
@@ -129,7 +129,7 @@ class GenericEntity (pygame.sprite.Sprite):
     def takeDamage(self, damage):
         self.health -= damage
         self.isEntityAlive()
-        
+
     def isEntityAlive(self):
         if self.health <= 0:
             self.isAlive = False

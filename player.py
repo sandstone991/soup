@@ -16,11 +16,9 @@ class Player(GenericEntity):
     A class to represent the player
     which inherits from the GenericEntity class
     ...
-
     Attributes
     ----------
     Check the generic_entity class
-
     Methods
     -------
     move():takes input and transfroms it to speed in y or x
@@ -76,6 +74,3 @@ class Player(GenericEntity):
         self.weapon.x = self.x
         self.weapon.y = self.y
         self.weapon.applyActions()
-
-    def getCoords(self):
-        return (self.x, self.y)
