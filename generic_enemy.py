@@ -40,7 +40,7 @@ class GenericEnemy(GenericEntity):
         self.detectRange = detectRange
         self.attackRange = attackRange
         self.attackPower = attackPower
-        self.zebyFlag = 0
+        self.damageFlag = 0
         self.distance = 99999999
         self.listOfActions = [self.calculateDistance,
                               self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl]
@@ -54,19 +54,19 @@ class GenericEnemy(GenericEntity):
             return True
         else:
             return False
-
+        # check if the player attcks the enemy, in case of attacing -> do some damage to the enemy
     def playerAttack(self):
-        if self.distance <= 20 and self.zebyFlag:
+        if self.distance <= 20 and self.damageFlag:
             self.takeDamage(1)
             print(self.health)
 
-
+        # holding the damage rate (to avoid some other bugs)
     def damageControl(self):
-        if self.zebyFlag!=0:
-            self.zebyFlag-=1
+        if self.damageFlag!=0:
+            self.damageFlag-=1
         else:
-            self.zebyFlag= 0
-        
+            self.damageFlag= 0
+       
     def isInAttackRange(self):
 
         if self.isInRange(self.attackRange):
