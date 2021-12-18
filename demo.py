@@ -3,6 +3,8 @@ from player import Player
 from generic_enemy import GenericEnemy
 from sys import exit
 from weapon import Weapon
+from ui import Ui,Start
+from ui import GameOver,Images
 # Starts & intiates pygame
 pygame.init()
 weaponO = Weapon()
@@ -14,14 +16,25 @@ player = pygame.sprite.Group()
 player.add(playerO)
 WIDTH = 1366
 HEIGHT = 768
+started = True
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Soup')
 # You can also change the icon
 clock = pygame.time.Clock()
 floor_surface = pygame.image.load('Textures/frames/floor_1.png').convert()
-
+ui0 = Ui(screen,WIDTH,HEIGHT,floor_surface,started)
+start = Start(screen,WIDTH,HEIGHT,floor_surface,started)
+over = GameOver(screen,WIDTH,HEIGHT,floor_surface,started)
+img = Images()
+#running = True
+game_over = True
 
 while True:
+    # if game_over:
+    #     over.gameOver()
+    #     game_over = False
+    start.startUi()
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -55,13 +68,17 @@ while True:
             weaponO.attackDelay()
         if event.type == pygame.MOUSEBUTTONUP:
             weaponO.attackFlag = False
+        
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                ui0.paused()
     # draw all out elements
     # Updates the display
     for i in range(0, HEIGHT, 16):
         for k in range(0, WIDTH, 16):
             screen.blit(floor_surface, (k, i))
     # debug purposes
-
+    # screen.blit(pygame.transform.scale(img.pause_surface,(50,50)),(WIDTH-50,0))
+    ui0.health()
     enemy.draw(screen)
     enemy.update()
     player.draw(screen)
