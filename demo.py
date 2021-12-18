@@ -3,7 +3,7 @@ from player import Player
 from generic_enemy import GenericEnemy
 from sys import exit
 from weapon import Weapon
-from ui import Ui,Start
+from ui import Ui, Start
 # Starts & intiates pygame
 pygame.init()
 weaponO = Weapon()
@@ -15,15 +15,15 @@ player = pygame.sprite.Group()
 player.add(playerO)
 WIDTH = 1366
 HEIGHT = 768
-#to control paused function in ui
+# to control paused function in ui
 started = True
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Soup')
 # You can also change the icon
 clock = pygame.time.Clock()
 floor_surface = pygame.image.load('Textures/frames/floor_1.png').convert()
-ui0 = Ui(screen,WIDTH,HEIGHT,floor_surface,started)
-start = Start(screen,WIDTH,HEIGHT,floor_surface,started)
+ui = Ui(screen, WIDTH, HEIGHT, floor_surface, started)
+start = Start(screen, WIDTH, HEIGHT, floor_surface, started)
 while True:
     start.startUi()
     for event in pygame.event.get():
@@ -58,9 +58,8 @@ while True:
             weaponO.attackDelay()
             enemyO.damageFlag = 5
 
-        
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                ui0.paused()
+            ui.paused()
 
     # draw all out elements
     # Updates the display
@@ -77,6 +76,6 @@ while True:
     weaponO.draw(screen)
     pygame.display.update()
     # Locks the frame rate at 60 fps
-    #not very clean code
+    # not very clean code
     weaponO.direction = playerO.direction
     clock.tick(60)

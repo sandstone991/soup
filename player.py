@@ -33,12 +33,12 @@ class Player(GenericEntity):
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
-        self.listOfActions = [self.move, self.applyMove, self.updateWeapon,self.attack]
+        self.listOfActions = [self.move, self.applyMove,
+                              self.updateWeapon, self.attack]
         self.weapon = weapon
 
     def dash(self):
-        pass   
-    
+        pass
 
     # def calculateDistance(self):
     #     self.distance = sqrt(
@@ -76,3 +76,6 @@ class Player(GenericEntity):
         self.weapon.x = self.x
         self.weapon.y = self.y
         self.weapon.applyActions()
+
+    def getCoords(self):
+        return (self.x, self.y)
