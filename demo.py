@@ -37,7 +37,7 @@ while True:
     # if game_over:
     #     over.gameOver()
     #     game_over = False
-
+    start.startUi()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

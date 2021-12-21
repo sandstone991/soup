@@ -1,6 +1,9 @@
 
 import pygame
+from pygame import mixer
 import sys
+import datetime
+
 
 
 class Images:
@@ -37,6 +40,9 @@ class Images:
             'Textures/imagesUi/health4.png').convert()
         self.health5_surface = pygame.image.load(
             'Textures/imagesUi/health5.png').convert()
+
+        self.press_sound = mixer.Sound('audio/ui/press.wav')
+        self.hover_sound = mixer.Sound('audio/ui/hover.wav')
         super(Images, self).__init__(*args, **kwargs)
 
 
@@ -100,6 +106,11 @@ class Ui(Colors, Images):
                 'rect': pygame.Rect(x-(w/2), y, w, h),
                 }
 
+    def resetDelay(self):
+
+        pygame.time.wait(200)
+        
+
     def setImage(self, img_Surf, x, y, w, h):
         image_rect = pygame.Rect(x-(w/2), y, w, h)
         image_surf = self.scaleImage(img_Surf, w, h)
@@ -159,7 +170,7 @@ class Ui(Colors, Images):
                 elif event.type == pygame.MOUSEMOTION:
                     # Switch the active surface of the buttons
                     # if we're hovering over them.
-                    if resumeRect.collidepoint(pygame.mouse.get_pos()):
+                    if resumeRect.collidepoint(pygame.mouse.get_pos()):                        
                         resumeSurf, resumeRect = self.setImage(
                             self.resume_surf, self.WIDTH/2, self.HEIGHT/2 - 100, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
                     else:
@@ -194,15 +205,24 @@ class Ui(Colors, Images):
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     # Check if the buttons were clicked.
-                    if resumeRect.collidepoint(event.pos):
+                    if resumeRect.collidepoint(event.pos): 
+                        self.press_sound.play()
                         return  # Return to the main loop.
+
                     elif menuRect.collidepoint(event.pos):
-                        pass
+                        self.press_sound.play()
+
+                    elif highRect.collidepoint(event.pos):
+                        self.press_sound.play()
 
                     elif quitRect.collidepoint(event.pos):
+                        self.press_sound.play()
+                        
+                        self.resetDelay()
                         pygame.quit()
                         sys.exit()
-
+                            
+                        
             self.screen.blit(resumeSurf, resumeRect)
             self.screen.blit(menuSurface, menuRect)
             self.screen.blit(highSurf, highRect)
@@ -268,11 +288,18 @@ class Start(Ui):
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     # Check if the buttons were clicked.
                     if playRect.collidepoint(event.pos):
+                        self.press_sound.play()
                         self.newGame()  # Return to the main loop.
+                    
+                    elif highRect.collidepoint(event.pos):
+                        self.press_sound.play()
+
                     elif quitRect.collidepoint(event.pos):
+                        self.press_sound.play()
+                        self.resetDelay()
                         pygame.quit()
                         sys.exit()
-                    pass
+                    
             self.screen.blit(playSurf, playRect)
             self.screen.blit(highSurf, highRect)
             self.screen.blit(quitSurf, quitRect)
