@@ -1,4 +1,3 @@
-
 import pygame
 from pygame import mixer
 import sys
@@ -8,6 +7,20 @@ import datetime
 
 class Images:
     def __init__(self, *args, **kwargs) -> None:
+        self.idle_enemy = [
+        pygame.image.load('Textures/frames/big_demon_idle_anim_f0.png'), 
+        pygame.image.load('Textures/frames/big_demon_idle_anim_f1.png'),
+        pygame.image.load('Textures/frames/big_demon_idle_anim_f2.png'),
+        pygame.image.load('Textures/frames/big_demon_idle_anim_f3.png')
+        ]
+
+        self.idle_player = [
+        pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), 
+        pygame.image.load('Textures/frames/knight_m_idle_anim_f1.png'),
+        pygame.image.load('Textures/frames/knight_m_idle_anim_f2.png'), 
+        pygame.image.load('Textures/frames/knight_m_idle_anim_f3.png')
+        ]
+        
         self.start_surface = pygame.image.load(
             'Textures/imagesUi/start.png').convert()
         self.pause_surf = pygame.image.load(
@@ -64,7 +77,8 @@ class Ui(Colors, Images):
 
     def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started, *args, **kwargs) -> None:
         super(Ui, self).__init__(*args, **kwargs)
-
+        self.idiling_player = self.idle_player
+        self.idiling_enemy = self.idle_enemy
         self.screen = screen
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
@@ -76,6 +90,38 @@ class Ui(Colors, Images):
         self.heightAdd = 25
         self.healthWidth = 300
         self.healthHeight = 100
+        self.soundFlag0 = True
+        self.soundFlag1 = True
+        self.soundFlag2 = True
+        self.soundFlag3 = True
+        self.soundFlag4 = True
+        self.soundFlag5 = True
+        self.soundFlag6 = True
+        self.scale = (80,125)
+        self.idleIndex = 0
+        
+        
+        self.idleRight_player = [pygame.transform.scale(x, self.scale) for x in self.idiling_player]
+        self.idleLeft_player = [pygame.transform.flip(
+            x, True, False) for x in self.idleRight_player]
+        
+        self.idleRight_enemy = [pygame.transform.scale(x, self.scale) for x in self.idiling_enemy]
+        self.idleLeft_enemy = [pygame.transform.flip(
+            x, True, False) for x in self.idleRight_enemy]
+        
+        self.idleCurrent_enemy = self.idleLeft_enemy
+        self.idleCurrent_player = self.idleRight_player
+        self.image = self.idleCurrent_player[self.idleIndex]
+        self.image_enemy = self.idleCurrent_enemy[self.idleIndex]    
+
+    def idleAnimation(self,idleCurrent):
+        if self.idleIndex >= 3.9:
+            self.idleIndex = 0
+        else:
+            self.idleIndex += 0.01
+        self.image = idleCurrent[int(self.idleIndex)]
+        
+
 
     def scaleImage(self, img_surf, w, h):
         return pygame.transform.scale(img_surf, (w, h))
@@ -170,36 +216,53 @@ class Ui(Colors, Images):
                 elif event.type == pygame.MOUSEMOTION:
                     # Switch the active surface of the buttons
                     # if we're hovering over them.
-                    if resumeRect.collidepoint(pygame.mouse.get_pos()):                        
+                    if resumeRect.collidepoint(pygame.mouse.get_pos()):     
+                        if self.soundFlag0:
+                            self.soundFlag0 = False
+                            self.hover_sound.play()
+                                              
                         resumeSurf, resumeRect = self.setImage(
                             self.resume_surf, self.WIDTH/2, self.HEIGHT/2 - 100, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
                     else:
                         self.handleImages()
+                        self.soundFlag0 = True
                         resumeSurf, resumeRect = self.setImage(
                             self.resume_surf, self.WIDTH/2, self.HEIGHT/2 - 100, self.imgWidth, self.imgHeight)
 
                     if menuRect.collidepoint(pygame.mouse.get_pos()):
+                        if self.soundFlag1:
+                            self.soundFlag1 = False
+                            self.hover_sound.play()
                         menuSurface, menuRect = self.setImage(
                             self.menu_surface, self.WIDTH/2, self.HEIGHT/2 + 25, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
 
                     else:
                         self.handleImages()
+                        self.soundFlag1 = True
                         menuSurface, menuRect = self.setImage(
                             self.menu_surface, self.WIDTH/2, self.HEIGHT/2 + 25, self.imgWidth, self.imgHeight)
 
                     if highRect.collidepoint(pygame.mouse.get_pos()):
+                        if self.soundFlag2:
+                            self.soundFlag2 = False
+                            self.hover_sound.play()
                         highSurf, highRect = self.setImage(
                             self.highScore_surf, self.WIDTH/2, self.HEIGHT/2 + 150, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
                     else:
                         self.handleImages()
+                        self.soundFlag2 = True
                         highSurf, highRect = self.setImage(
                             self.highScore_surf, self.WIDTH/2, self.HEIGHT/2 + 150, self.imgWidth, self.imgHeight)
 
                     if quitRect.collidepoint(pygame.mouse.get_pos()):
+                        if self.soundFlag3:
+                            self.soundFlag3 = False
+                            self.hover_sound.play()
                         quitSurface, quitRect = self.setImage(
                             self.quit_surface, self.WIDTH/2, self.HEIGHT/2 + 275, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
                     else:
                         self.handleImages()
+                        self.soundFlag3 = True
                         quitSurface, quitRect = self.setImage(
                             self.quit_surface, self.WIDTH/2, self.HEIGHT/2 + 275, self.imgWidth, self.imgHeight)
 
@@ -207,13 +270,16 @@ class Ui(Colors, Images):
                     # Check if the buttons were clicked.
                     if resumeRect.collidepoint(event.pos): 
                         self.press_sound.play()
+                        self.resetDelay()
                         return  # Return to the main loop.
 
                     elif menuRect.collidepoint(event.pos):
                         self.press_sound.play()
+                        self.resetDelay()
 
                     elif highRect.collidepoint(event.pos):
                         self.press_sound.play()
+                        self.resetDelay()
 
                     elif quitRect.collidepoint(event.pos):
                         self.press_sound.play()
@@ -227,7 +293,6 @@ class Ui(Colors, Images):
             self.screen.blit(menuSurface, menuRect)
             self.screen.blit(highSurf, highRect)
             self.screen.blit(quitSurface, quitRect)
-
             pygame.display.update()
 
 
@@ -245,6 +310,8 @@ class Start(Ui):
 
     def startUi(self):
         self.startHandle()
+        self.idleAnimation(self.idleCurrent_player)
+        
         playSurf, playRect = self.setImage(
             self.start_surface, self.WIDTH/2, self.HEIGHT/2 - 100, self.imgWidth, self.imgHeight)
         highSurf, highRect = self.setImage(
@@ -253,8 +320,9 @@ class Start(Ui):
             self.quit_surface, self.WIDTH/2, self.HEIGHT/2 + 150, self.imgWidth, self.imgHeight)
 
         while self.started:
+            
             for event in pygame.event.get():
-
+                
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
@@ -262,27 +330,39 @@ class Start(Ui):
                     # Switch the active surface of the buttons
                     # if we're hovering over them.
                     if playRect.collidepoint(pygame.mouse.get_pos()):
+                        if self.soundFlag4:
+                            self.soundFlag4 = False
+                            self.hover_sound.play()
                         playSurf, playRect = self.setImage(
                             self.start_surface, self.WIDTH/2, self.HEIGHT/2 - 100, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
 
                     else:
                         self.startHandle()
+                        self.soundFlag4 = True
                         playSurf, playRect = self.setImage(
                             self.start_surface, self.WIDTH/2, self.HEIGHT/2 - 100, self.imgWidth, self.imgHeight)
 
                     if highRect.collidepoint(pygame.mouse.get_pos()):
+                        if self.soundFlag5:
+                            self.soundFlag5 = False
+                            self.hover_sound.play()
                         highSurf, highRect = self.setImage(
                             self.highScore_surf, self.WIDTH/2, self.HEIGHT/2 + 25, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
                     else:
                         self.startHandle()
+                        self.soundFlag5 = True
                         highSurf, highRect = self.setImage(
                             self.highScore_surf, self.WIDTH/2, self.HEIGHT/2 + 25, self.imgWidth, self.imgHeight)
 
                     if quitRect.collidepoint(pygame.mouse.get_pos()):
+                        if self.soundFlag6:
+                            self.soundFlag6 = False
+                            self.hover_sound.play()
                         quitSurf, quitRect = self.setImage(
                             self.quit_surface, self.WIDTH/2, self.HEIGHT/2 + 150, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
                     else:
                         self.startHandle()
+                        self.soundFlag6 = True
                         quitSurf, quitRect = self.setImage(
                             self.quit_surface, self.WIDTH/2, self.HEIGHT/2 + 150, self.imgWidth, self.imgHeight)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -290,9 +370,11 @@ class Start(Ui):
                     if playRect.collidepoint(event.pos):
                         self.press_sound.play()
                         self.newGame()  # Return to the main loop.
-                    
+                        self.resetDelay()
+
                     elif highRect.collidepoint(event.pos):
                         self.press_sound.play()
+                        self.resetDelay()
 
                     elif quitRect.collidepoint(event.pos):
                         self.press_sound.play()
@@ -303,6 +385,8 @@ class Start(Ui):
             self.screen.blit(playSurf, playRect)
             self.screen.blit(highSurf, highRect)
             self.screen.blit(quitSurf, quitRect)
+            self.screen.blit(self.image,(300,400))
+            self.screen.blit(self.image_enemy,(self.WIDTH-300,400))
 
             pygame.display.update()
 
