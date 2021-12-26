@@ -13,6 +13,8 @@ run = [pygame.image.load('Textures/frames/big_demon_run_anim_f0.png'), pygame.im
 sound = 'audio/Player/player_walk.wav'
 hitSound = 'audio/weapon/audio_weapon_snd_player_hit.mp3'
 enemyDie = 'audio/weapon/audio_weapon_snd_enemy_attack_03.ogg'
+hitpSound= 'audio\weapon\Fire swoosh burning - Sound Effect.mp3'
+phf=1
 
 class GenericEnemy(GenericEntity):
     """
@@ -51,6 +53,7 @@ class GenericEnemy(GenericEntity):
         self.attackRange = attackRange
         self.attackPower = attackPower
         self.hitSound = pygame.mixer.Sound(hitSound)
+        self.hitpSound = pygame.mixer.Sound(hitpSound)
         self.hitSound.set_volume(.5)
         self.enemyDieSound = pygame.mixer.Sound(enemyDie)
         self.enemyDieSound.set_volume(.7)
@@ -86,15 +89,26 @@ class GenericEnemy(GenericEntity):
             self.damageFlag-=1
         else:
             self.damageFlag= 0
+        """if self.player.damageFlag!=0:
+            self.player.damageFlag-=1
+        else:
+            self.player.damageFlag= 0"""
        
     def isInAttackRange(self):
         if self.isInRange(self.attackRange):
             self.velX = 0
             self.velY = 0
             self.attacking = True
-    def attack(self):
-        if self.isInRange(self.attackRange):
+      def attack(self):
+        if self.isInRange(self.attackRange)and self.player.health:
             self.player.takeDamage(self.attackPower)
+            self.hitSound.play()
+            self.hitpSound.play()
+            #print(self.player.health)
+        """  if (self.player.health == 0):
+                Weapon.kill()
+                phf=0
+                print(phf)"""
     def move(self):
         if not self.attacking:
             if self.isInRange(self.detectRange):
