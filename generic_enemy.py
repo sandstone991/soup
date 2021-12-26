@@ -32,6 +32,13 @@ class GenericEnemy(GenericEntity):
     -------
     move()     :Checks if player in range if in range changes velX and velY with basic vector operations
     isInRange():Checks if player in range or not (Calculates euclidean distance and compares it with range)
+    damageContol(): to control the amount of damage done to the enemy
+    drawAdditions(): to draw the health bar of the enemy
+    isStillAlive(): checks if the enemy health is less than 5 to play dying sound
+    createParticles(): create multiple objects of the particle with different parameters given randomly
+    drawPartices(): calling the render function of the particle by iterating over the list of the created objects
+    cleanParticles(): clean the particles list to make a fresh one with fresh x,y valus -not used-
+    
     -------
     """
 
@@ -113,6 +120,7 @@ class GenericEnemy(GenericEntity):
 
     def drawAdditions(self):
         pygame.draw.rect(self.screen, (255,0,0),(self.rect.x,self.rect.y,self.health,5))
+    
     def isStillAlive(self):
         if self.health <= 5:
             self.enemyDieSound.play()
@@ -127,11 +135,13 @@ class GenericEnemy(GenericEntity):
         for x in range(randint(15, 25)):
             particle = Particle(self.rect.x+20, self.rect.y+30, randint(0,50)/10, randint(-3, -1), randint(2, 5), (166,16,30),1.5)
             self.particles.append(particle)
+    
     def drawParticles(self):
         for particle in self.particles:
             particle.render(self.screen)
             if particle.radius <= 0:
                 self.particles.remove(particle)
+    
     def cleanParticles(self):
         self.particles.clear()
 
