@@ -15,7 +15,7 @@ HEIGHT = 768
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 weaponO = Weapon()
-playerO = Player(weaponO)
+playerO = Player(weaponO,screen=screen)
 enemyO = GenericEnemy(screen=screen,player=playerO)
 enemy = pygame.sprite.Group()
 enemy.add(enemyO)

@@ -25,15 +25,17 @@ class Player(GenericEntity):
     updateWeapons(): gives the weapon the current player coords
     """
 
-    def __init__(self, weapon, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100):
+    def __init__(self, weapon,screen, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
+        self.health=health
         self.listOfActions = [self.move, self.applyMove,
                               self.updateWeapon, self.attack]
         self.weapon = weapon
+        self.screen = screen
 
     def dash(self):
         pass
@@ -75,5 +77,5 @@ class Player(GenericEntity):
         self.weapon.y = self.y
         self.weapon.applyActions()
        
-     def drawAdditions(self):
+    def drawAdditions(self):
         pygame.draw.rect(self.screen, (255,0,0),(self.rect.x,self.rect.y,self.health,5))

@@ -40,7 +40,7 @@ class GenericEnemy(GenericEntity):
     -------
     """
 
-    def __init__(self,screen,player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=5):
+    def __init__(self,screen,player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=0.5):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.player = player
         self.screen = screen
@@ -61,7 +61,7 @@ class GenericEnemy(GenericEntity):
         self.distance = 99999999
         self.particles =[]
         self.listOfActions = [self.calculateDistance,
-                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl,self.drawAdditions,self.isStillAlive]
+                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl,self.drawAdditions,self.isStillAlive,self.attack]
 
     def calculateDistance(self):
         self.distance = math.sqrt(
@@ -99,16 +99,15 @@ class GenericEnemy(GenericEntity):
             self.velX = 0
             self.velY = 0
             self.attacking = True
-      def attack(self):
+    def attack(self):
         if self.isInRange(self.attackRange)and self.player.health:
             self.player.takeDamage(self.attackPower)
             self.hitSound.play()
             self.hitpSound.play()
-            #print(self.player.health)
-        """  if (self.player.health == 0):
-                Weapon.kill()
+            print("phealth:",self.player.health)
+        if (self.player.health == 0):
                 phf=0
-                print(phf)"""
+                print(phf)
     def move(self):
         if not self.attacking:
             if self.isInRange(self.detectRange):
