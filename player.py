@@ -74,3 +74,6 @@ class Player(GenericEntity):
         self.weapon.x = self.x
         self.weapon.y = self.y
         self.weapon.applyActions()
+       
+     def drawAdditions(self):
+        pygame.draw.rect(self.screen, (255,0,0),(self.rect.x,self.rect.y,self.health,5))
