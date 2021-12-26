@@ -11,8 +11,8 @@ run = [pygame.image.load('Textures/frames/big_demon_run_anim_f0.png'), pygame.im
        pygame.image.load('Textures/frames/big_demon_run_anim_f2.png'), pygame.image.load('Textures/frames/big_demon_run_anim_f3.png')]
 
 sound = 'audio/Player/player_walk.wav'
-hitSound = 'audio/weapon/snd_player_hit.mp3'
-enemyDie = 'audio/weapon/snd_enemy_attack_03.ogg'
+hitSound = 'audio/weapon/audio_weapon_snd_player_hit.mp3'
+enemyDie = 'audio/weapon/audio_weapon_snd_enemy_attack_03.ogg'
 
 class GenericEnemy(GenericEntity):
     """

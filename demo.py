@@ -8,18 +8,22 @@ from ui import*
 from level import Level
 from game_data import level_0
 # Starts & intiates pygame
+
+WIDTH = 1366
+HEIGHT = 768
+
 pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 weaponO = Weapon()
 playerO = Player(weaponO)
-enemyO = GenericEnemy(playerO)
+enemyO = GenericEnemy(screen=screen,player=playerO)
 enemy = pygame.sprite.Group()
 enemy.add(enemyO)
 player = pygame.sprite.Group()
 player.add(playerO)
-WIDTH = 1366
-HEIGHT = 768
+
 started = True
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
 pygame.display.set_caption('Soup')
 # You can also change the icon
 clock = pygame.time.Clock()
@@ -76,6 +80,7 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             weaponO.attackFlag = 20
             weaponO.attackDelay()
+            enemyO.damageFlag=5
         if event.type == pygame.MOUSEBUTTONUP:
             weaponO.attackFlag = False
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:

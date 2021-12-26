@@ -134,7 +134,7 @@ class GenericEntity (pygame.sprite.Sprite):
         if self.health <= 0:
             self.isAlive = False
             self.health = 0
-
+            self.kill()
     def update(self):
         self.applyActions()
         self.handleAnimation()
