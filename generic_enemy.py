@@ -1,7 +1,7 @@
 import pygame
 import math
 from random import randint
-
+from ui import GameOver
 from generic_entity import GenericEntity
 from particles import Particle
 # temporary spirtes for testing please DELETE
@@ -40,7 +40,7 @@ class GenericEnemy(GenericEntity):
     -------
     """
 
-    def __init__(self,screen,player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=0.5):
+    def __init__(self,screen,player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=0.3):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.player = player
         self.screen = screen
@@ -106,8 +106,11 @@ class GenericEnemy(GenericEntity):
             self.hitpSound.play()
             print("phealth:",self.player.health)
         if (self.player.health == 0):
-                phf=0
-                print(phf)
+                self.player.healthFlag = True
+                self.player.health = 100
+                self.velX = 50
+                self.velY = 50
+                # print(phf)
     def move(self):
         if not self.attacking:
             if self.isInRange(self.detectRange):

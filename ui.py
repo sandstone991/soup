@@ -52,7 +52,7 @@ class Images:
         self.health4_surface = pygame.image.load(
             'Textures/imagesUi/health4.png').convert()
         self.health5_surface = pygame.image.load(
-            'Textures/imagesUi/health5.png').convert()
+            'Textures/imagesUi/heart.png')
 
         self.press_sound = mixer.Sound('audio/ui/press.wav')
         self.hover_sound = mixer.Sound('audio/ui/hover.wav')
@@ -88,7 +88,7 @@ class Ui(Colors, Images):
         self.imgHeight = 70
         self.widthAdd = 80
         self.heightAdd = 25
-        self.healthWidth = 300
+        self.healthWidth = 100
         self.healthHeight = 100
         self.soundFlag0 = True
         self.soundFlag1 = True
@@ -180,7 +180,7 @@ class Ui(Colors, Images):
 
     def health(self):
         health0_Surf, health0_Rect = self.setImage(
-            self.health0_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
+            self.health0_surface, self.WIDTH/2 , 0, self.healthWidth, self.healthHeight)
         health1_Surf, health1_Rect = self.setImage(
             self.health1_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
         health2_Surf, health2_Rect = self.setImage(
@@ -190,7 +190,7 @@ class Ui(Colors, Images):
         health4_Surf, health4_Rect = self.setImage(
             self.health4_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
         health5_Surf, health5_Rect = self.setImage(
-            self.health5_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
+            self.health5_surface, self.WIDTH/2 - 100, 0, self.healthWidth, self.healthHeight)
 
         self.screen.blit(health5_Surf, health5_Rect)
 
@@ -302,11 +302,11 @@ class Start(Ui):
 
     def startHandle(self):
         Ui.fillBack(self)
-        startText = pygame.font.Font("8-BIT WONDER.TTF", 48)
-        textSurf, textRect = self.text_objects(
-            "Game Started", (self.WIDTH/2, self.HEIGHT/2), startText, self.white)
-        textRect.center = ((self.WIDTH/2), 100)
-        self.screen.blit(textSurf, textRect)
+        # startText = pygame.font.Font("8-BIT WONDER.TTF", 48)
+        # textSurf, textRect = self.text_objects(
+        #     "Game Started", (self.WIDTH/2, self.HEIGHT/2), startText, self.white)
+        # textRect.center = ((self.WIDTH/2), 100)
+        # self.screen.blit(textSurf, textRect)
 
     def startUi(self):
         self.startHandle()
@@ -403,7 +403,7 @@ class GameOver(Ui):
         toSurf, toRect = self.text_objects(
             "Game Over", (self.WIDTH/2, self.HEIGHT/2), gameOverText, (102, 76, 155))
         taSurf, taRect = self.text_objects(
-            "Press Enter to play again", (self.WIDTH/2, self.HEIGHT/2 + 200), newText, self.white)
+            "Press Enter to exit game", (self.WIDTH/2, self.HEIGHT/2 + 200), newText, self.white)
 
         self.screen.blit(toSurf, toRect)
         self.screen.blit(taSurf, taRect)
@@ -416,4 +416,6 @@ class GameOver(Ui):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         waiting = False
+                        pygame.quit()
+                        exit()
             pygame.display.update()

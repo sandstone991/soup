@@ -11,6 +11,8 @@ idle = [pygame.image.load('Textures/frames/knight_m_idle_anim_f0.png'), pygame.i
         pygame.image.load('Textures/frames/knight_m_idle_anim_f2.png'), pygame.image.load('Textures/frames/knight_m_idle_anim_f3.png')]
 
 
+screen = pygame.display.set_mode((1366, 768))
+
 class Player(GenericEntity):
     """
     A class to represent the player
@@ -25,15 +27,16 @@ class Player(GenericEntity):
     updateWeapons(): gives the weapon the current player coords
     """
 
-    def __init__(self, weapon,screen, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100):
+    def __init__(self, weapon,screen, x=500, y=500, running=run, idiling=idle, sounds='audio/Player/player_walk.wav', scale=(25, 40), speed=3, health=100,healthFlag = False):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
+        self.healthFlag = False
         self.health=health
         self.listOfActions = [self.move, self.applyMove,
-                              self.updateWeapon, self.attack]
+                              self.updateWeapon, self.attack,self.drawAdditions]
         self.weapon = weapon
         self.screen = screen
 
@@ -78,4 +81,5 @@ class Player(GenericEntity):
         self.weapon.applyActions()
        
     def drawAdditions(self):
-        pygame.draw.rect(self.screen, (255,0,0),(self.rect.x,self.rect.y,self.health,5))
+        pygame.draw.rect(screen, (255,0,0),(1366/2 - 50,10,self.health * 5 ,80))
+
