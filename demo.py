@@ -15,7 +15,7 @@ HEIGHT = 768
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 weaponO = Weapon()
-playerO = Player(weaponO,screen=screen)
+playerO = Player(weaponO,screen,healthFlag)
 enemyO = GenericEnemy(screen=screen,player=playerO)
 enemy = pygame.sprite.Group()
 enemy.add(enemyO)
@@ -38,9 +38,9 @@ speed = 5
 game_over = True
 
 while True:
-    # if game_over:
-    #     over.gameOver()
-    #     game_over = False
+    if playerO.healthFlag == True:
+            over.gameOver()
+            playerO.healthFlag = False
     start.startUi()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
