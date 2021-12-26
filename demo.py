@@ -1,6 +1,6 @@
 import pygame
 from player import Player
-from generic_enemy import GenericEnemy
+from generic_enemy import GenericEnemy,phf
 from sys import exit
 from weapon import Weapon
 from setting import*
