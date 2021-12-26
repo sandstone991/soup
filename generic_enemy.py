@@ -1,14 +1,18 @@
 import pygame
 import math
+from random import randint
 
 from generic_entity import GenericEntity
+from particles import Particle
 # temporary spirtes for testing please DELETE
 idle = [pygame.image.load('Textures/frames/big_demon_idle_anim_f0.png'), pygame.image.load('Textures/frames/big_demon_idle_anim_f1.png'),
         pygame.image.load('Textures/frames/big_demon_idle_anim_f2.png'), pygame.image.load('Textures/frames/big_demon_idle_anim_f3.png')]
-sound = 'audio/Player/player_walk.wav'
 run = [pygame.image.load('Textures/frames/big_demon_run_anim_f0.png'), pygame.image.load('Textures/frames/big_demon_run_anim_f1.png'),
        pygame.image.load('Textures/frames/big_demon_run_anim_f2.png'), pygame.image.load('Textures/frames/big_demon_run_anim_f3.png')]
 
+sound = 'audio/Player/player_walk.wav'
+hitSound = 'audio/weapon/snd_player_hit.mp3'
+enemyDie = 'audio/weapon/snd_enemy_attack_03.ogg'
 
 class GenericEnemy(GenericEntity):
     """
@@ -22,14 +26,22 @@ class GenericEnemy(GenericEntity):
     ----------
     Methods
     -------
-    move()     :Checks if player in range if in range changes velX and velY with basic vector operations
-    isInRange():Checks if player in range or not (Calculates euclidean distance and compares it with range)
+    move()           :Checks if player in range if in range changes velX and velY with basic vector operations
+    isInRange()      :Checks if player in range or not (Calculates euclidean distance and compares it with range)
+    damageContol()   : to control the amount of damage done to the enemy
+    drawAdditions()  : to draw the health bar of the enemy
+    isStillAlive()   : checks if the enemy health is less than 5 to play dying sound
+    createParticles(): create multiple objects of the particle with different parameters given randomly
+    drawPartices()   : calling the render function of the particle by iterating over the list of the created objects
+    cleanParticles() : clean the particles list to make a fresh one with fresh x,y valus -not used-
+
     -------
     """
 
-    def __init__(self, player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=100, detectRange=100, attackRange=20, attackPower=5):
+    def __init__(self,screen,player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=5):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
         self.player = player
+        self.screen = screen
         self.dx = 0
         self.dy = 0
         self.attacking = False
@@ -38,10 +50,15 @@ class GenericEnemy(GenericEntity):
         self.detectRange = detectRange
         self.attackRange = attackRange
         self.attackPower = attackPower
+        self.hitSound = pygame.mixer.Sound(hitSound)
+        self.hitSound.set_volume(.5)
+        self.enemyDieSound = pygame.mixer.Sound(enemyDie)
+        self.enemyDieSound.set_volume(.7)
         self.damageFlag = 0
         self.distance = 99999999
+        self.particles =[]
         self.listOfActions = [self.calculateDistance,
-                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl]
+                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl,self.drawAdditions,self.isStillAlive]
 
     def calculateDistance(self):
         self.distance = math.sqrt(
@@ -52,31 +69,32 @@ class GenericEnemy(GenericEntity):
             return True
         else:
             return False
-        # check if the player attcks the enemy, in case of attacing -> do some damage to the enemy
-
+    
+    # check if the player attcks the enemy, in case of attacing -> do some damage to the enemy
     def playerAttack(self):
         if self.distance <= 20 and self.damageFlag:
             self.takeDamage(1)
+            self.hitSound.play()
             print(self.health)
-
-        # holding the damage rate (to avoid some other bugs)
+            self.createParticles()
+            self.drawParticles()
+            # self.cleanParticles()
+    
+    # holding the damage rate (to avoid some other bugs)
     def damageControl(self):
-        if self.damageFlag != 0:
-            self.damageFlag -= 1
+        if self.damageFlag!=0:
+            self.damageFlag-=1
         else:
-            self.damageFlag = 0
-
+            self.damageFlag= 0
+       
     def isInAttackRange(self):
-
         if self.isInRange(self.attackRange):
             self.velX = 0
             self.velY = 0
             self.attacking = True
-
     def attack(self):
         if self.isInRange(self.attackRange):
             self.player.takeDamage(self.attackPower)
-
     def move(self):
         if not self.attacking:
             if self.isInRange(self.detectRange):
@@ -94,3 +112,24 @@ class GenericEnemy(GenericEntity):
                 self.coolDownTimer = 0
             else:
                 self.coolDownTimer += 1
+
+    def drawAdditions(self):
+        pygame.draw.rect(self.screen, (255,0,0),(self.rect.x,self.rect.y,self.health,5))
+
+    def isStillAlive(self):
+        if self.health <= 5:
+            self.enemyDieSound.play()
+    
+    def createParticles(self):
+        for x in range(randint(15, 25)):
+            particle = Particle(self.rect.x+20, self.rect.y+30, randint(0,50)/10, randint(-3, -1), randint(2, 5), (166,16,30),1.5)
+            self.particles.append(particle)
+
+    def drawParticles(self):
+        for particle in self.particles:
+            particle.render(self.screen)
+            if particle.radius <= 0:
+                self.particles.remove(particle)
+
+    def cleanParticles(self):
+        self.particles.clear()
