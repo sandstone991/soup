@@ -11,6 +11,7 @@ from game_data import level_0
 
 WIDTH = 1366
 HEIGHT = 768
+healthFlag = False
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
