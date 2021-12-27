@@ -41,18 +41,26 @@ class Images:
             'Textures/imagesUi/pause0.png').convert()
         self.exit_surface = pygame.image.load(
             'Textures/imagesUi/exit.png').convert()
-        self.health0_surface = pygame.image.load(
-            'Textures/imagesUi/health0.png').convert()
-        self.health1_surface = pygame.image.load(
-            'Textures/imagesUi/health1.png').convert()
-        self.health2_surface = pygame.image.load(
-            'Textures/imagesUi/health2.png').convert()
-        self.health3_surface = pygame.image.load(
-            'Textures/imagesUi/health3.png').convert()
-        self.health4_surface = pygame.image.load(
-            'Textures/imagesUi/health4.png').convert()
-        self.health5_surface = pygame.image.load(
-            'Textures/imagesUi/heart.png')
+        # self.healthList = [
+        #     pygame.image.load('Textures/imagesUi/health0.png'),
+        #     pygame.image.load('Textures/imagesUi/health1.png'),
+        #     pygame.image.load('Textures/imagesUi/health2.png'),
+        #     pygame.image.load('Textures/imagesUi/health3.png'),
+        #     pygame.image.load('Textures/imagesUi/health4.png'),
+        #     pygame.image.load('Textures/imagesUi/health5.png')
+        #     ]
+        # self.health0_surface = pygame.image.load(
+        #     'Textures/imagesUi/health0.png').convert()
+        # self.health1_surface = pygame.image.load(
+        #     'Textures/imagesUi/health1.png').convert()
+        # self.health2_surface = pygame.image.load(
+        #     'Textures/imagesUi/health2.png').convert()
+        # self.health3_surface = pygame.image.load(
+        #     'Textures/imagesUi/health3.png').convert()
+        # self.health4_surface = pygame.image.load(
+        #     'Textures/imagesUi/health4.png').convert()
+        # self.health5_surface = pygame.image.load(
+        #     'Textures/imagesUi/heart.png')
 
         self.press_sound = mixer.Sound('audio/ui/press.wav')
         self.hover_sound = mixer.Sound('audio/ui/hover.wav')
@@ -190,9 +198,9 @@ class Ui(Colors, Images):
         health4_Surf, health4_Rect = self.setImage(
             self.health4_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
         health5_Surf, health5_Rect = self.setImage(
-            self.health5_surface, self.WIDTH/2 - 100, 0, self.healthWidth, self.healthHeight)
+            self.health5_surface, self.WIDTH/2 - 150, 0, self.healthWidth, self.healthHeight)
 
-        self.screen.blit(health5_Surf, health5_Rect)
+        # self.screen.blit(health5_Surf, health5_Rect)
 
     def paused(self):
         self.started = True

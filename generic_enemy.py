@@ -1,3 +1,4 @@
+from player import Player
 import pygame
 import math
 from random import randint
@@ -15,9 +16,7 @@ hitSound = 'audio/weapon/audio_weapon_snd_player_hit.mp3'
 enemyDie = 'audio/weapon/audio_weapon_snd_enemy_attack_03.ogg'
 hitpSound= 'audio\weapon\Fire swoosh burning - Sound Effect.mp3'
 phf=1
-WIDTH = 1366
-HEIGHT = 768
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
 class GenericEnemy(GenericEntity):
     """
     A class for all kinds of enemies to inherit from
@@ -62,9 +61,22 @@ class GenericEnemy(GenericEntity):
         self.damageFlag = 0
         self.distance = 99999999
         self.particles =[]
+        # self.healthWidth = 400
+        # self.healthHeight = 150
+        # self.WIDTH = 1366
+        # self.HEIGHT = 768
         self.listOfActions = [self.calculateDistance,
                               self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl,self.drawAdditions,self.isStillAlive,self.attack]
-
+        # self.healthList = [
+        #     pygame.image.load('Textures/imagesUi/health0.png'),
+        #     pygame.image.load('Textures/imagesUi/health1.png'),
+        #     pygame.image.load('Textures/imagesUi/health2.png'),
+        #     pygame.image.load('Textures/imagesUi/health3.png'),
+        #     pygame.image.load('Textures/imagesUi/health4.png'),
+        #     pygame.image.load('Textures/imagesUi/health5.png')
+        #     ]
+        
+        
     def calculateDistance(self):
         self.distance = math.sqrt(
             (self.player.x-self.x)**2 + (self.player.y-self.y)**2)
@@ -101,21 +113,52 @@ class GenericEnemy(GenericEntity):
             self.velX = 0
             self.velY = 0
             self.attacking = True
+
+    # def scaleImage(self, img_surf, w, h):
+    #     return pygame.transform.scale(img_surf, (w, h))
+
+    # def setImage(self, img_Surf, x, y, w, h):
+    #     image_rect = pygame.Rect(x-(w/2), y, w, h)
+    #     image_surf = self.scaleImage(img_Surf, w, h)
+    #     return image_surf, image_rect
+
+    
+    # def healthBar(self):
+    #     self.health0_Surf, self.health0_Rect = self.setImage(
+    #         self.healthList[0], self.WIDTH/2 , -30, self.healthWidth, self.healthHeight)
+    #     self.health1_Surf, self.health1_Rect = self.setImage(
+    #         self.healthList[1], self.WIDTH/2, -30, self.healthWidth, self.healthHeight)
+    #     self.health2_Surf, self.health2_Rect = self.setImage(
+    #         self.healthList[2], self.WIDTH/2, -30, self.healthWidth, self.healthHeight)
+    #     self.health3_Surf, self.health3_Rect = self.setImage(
+    #         self.healthList[3], self.WIDTH/2, -30, self.healthWidth, self.healthHeight)
+    #     self.health4_Surf, self.health4_Rect = self.setImage(
+    #         self.healthList[4], self.WIDTH/2, -30, self.healthWidth, self.healthHeight)
+    #     self.health5_Surf, self.health5_Rect = self.setImage(
+    #         self.healthList[5], self.WIDTH/2 , -30, self.healthWidth, self.healthHeight)
+    #     if self.player.health > 84:
+    #         self.screen.blit(self.health5_Surf, self.health5_Rect)
+    #     elif self.player.health < 84 and self.player.health > 68: 
+    #         self.screen.blit(self.health4_Surf, self.health4_Rect)
+    #     elif self.player.health < 68 and self.player.health > 52: 
+    #         self.screen.blit(self.health3_Surf, self.health3_Rect)
+    #     elif self.player.health < 52 and self.player.health > 35: 
+    #         self.screen.blit(self.health2_Surf, self.health2_Rect)
+    #     elif self.player.health < 35 and self.player.health > 18: 
+    #         self.screen.blit(self.health1_Surf, self.health1_Rect)
+    #     elif self.player.health < 18: 
+    #         self.screen.blit(self.health0_Surf, self.health0_Rect)
+
     def attack(self):
         if self.isInRange(self.attackRange)and self.player.health:
             self.player.takeDamage(self.attackPower)
             self.hitSound.play()
             self.hitpSound.play()
-            circle=pygame.Surface((WIDTH*2,HEIGHT*2), pygame.SRCALPHA)
-            #circle.set_alpha(128)
-            pygame.draw.circle(circle, (255,0,0,128), (WIDTH/2,HEIGHT/2), HEIGHT+25,150)
-            screen.blit(circle, (0, 0))
             print("phealth:",self.player.health)
         if (self.player.health == 0):
                 self.player.healthFlag = True
                 self.player.health = 100
-                self.velX = 50
-                self.velY = 50
+                
                 # print(phf)
     def move(self):
         if not self.attacking:
