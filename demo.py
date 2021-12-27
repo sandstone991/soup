@@ -1,3 +1,4 @@
+   
 import pygame
 from player import Player
 from generic_enemy import GenericEnemy,phf
@@ -93,7 +94,6 @@ while True:
     # debug purposes
     # screen.blit(pygame.transform.scale(img.pause_surface,(50,50)),(WIDTH-50,0))
     # start.startUi()
-    ui0.health()
     level.run()
     enemy.draw(screen)
     enemy.update()

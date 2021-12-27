@@ -186,21 +186,21 @@ class Ui(Colors, Images):
         textRect.center = ((self.WIDTH/2), 100)
         self.screen.blit(textSurf, textRect)
 
-    def health(self):
-        health0_Surf, health0_Rect = self.setImage(
-            self.health0_surface, self.WIDTH/2 , 0, self.healthWidth, self.healthHeight)
-        health1_Surf, health1_Rect = self.setImage(
-            self.health1_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
-        health2_Surf, health2_Rect = self.setImage(
-            self.health2_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
-        health3_Surf, health3_Rect = self.setImage(
-            self.health3_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
-        health4_Surf, health4_Rect = self.setImage(
-            self.health4_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
-        health5_Surf, health5_Rect = self.setImage(
-            self.health5_surface, self.WIDTH/2 - 150, 0, self.healthWidth, self.healthHeight)
+    # def health(self):
+    #     health0_Surf, health0_Rect = self.setImage(
+    #         self.health0_surface, self.WIDTH/2 , 0, self.healthWidth, self.healthHeight)
+    #     health1_Surf, health1_Rect = self.setImage(
+    #         self.health1_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
+    #     health2_Surf, health2_Rect = self.setImage(
+    #         self.health2_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
+    #     health3_Surf, health3_Rect = self.setImage(
+    #         self.health3_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
+    #     health4_Surf, health4_Rect = self.setImage(
+    #         self.health4_surface, self.WIDTH/2, 0, self.healthWidth, self.healthHeight)
+    #     health5_Surf, health5_Rect = self.setImage(
+    #         self.health5_surface, self.WIDTH/2 - 150, 0, self.healthWidth, self.healthHeight)
 
-        # self.screen.blit(health5_Surf, health5_Rect)
+    #     # self.screen.blit(health5_Surf, health5_Rect)
 
     def paused(self):
         self.started = True
