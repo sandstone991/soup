@@ -94,13 +94,14 @@ while True:
     # screen.blit(pygame.transform.scale(img.pause_surface,(50,50)),(WIDTH-50,0))
     # start.startUi()
     ui0.health()
+    level.run()
     enemy.draw(screen)
     enemy.update()
     player.draw(screen)
     player.update()
     weaponO.update()
     weaponO.draw(screen)
-    level.run()
+   
     pygame.display.update()
     # Locks the frame rate at 60 fps
     # not very clean code
