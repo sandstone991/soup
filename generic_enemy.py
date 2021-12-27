@@ -104,6 +104,10 @@ class GenericEnemy(GenericEntity):
             self.player.takeDamage(self.attackPower)
             self.hitSound.play()
             self.hitpSound.play()
+            circle=pygame.Surface((WIDTH*2,HEIGHT*2), pygame.SRCALPHA)
+            #circle.set_alpha(128)
+            pygame.draw.circle(circle, (255,0,0,128), (WIDTH/2,HEIGHT/2), HEIGHT+25,150)
+            screen.blit(circle, (0, 0))
             print("phealth:",self.player.health)
         if (self.player.health == 0):
                 self.player.healthFlag = True
