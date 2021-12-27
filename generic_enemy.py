@@ -15,7 +15,9 @@ hitSound = 'audio/weapon/audio_weapon_snd_player_hit.mp3'
 enemyDie = 'audio/weapon/audio_weapon_snd_enemy_attack_03.ogg'
 hitpSound= 'audio\weapon\Fire swoosh burning - Sound Effect.mp3'
 phf=1
-
+WIDTH = 1366
+HEIGHT = 768
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 class GenericEnemy(GenericEntity):
     """
     A class for all kinds of enemies to inherit from
