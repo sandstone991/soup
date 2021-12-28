@@ -88,7 +88,7 @@ class Player(GenericEntity):
 
     def setHealth(self):
         x = self.WIDTH/2
-        y = -10
+        y = 0
         w = self.healthWidth 
         h = self.healthHeight
         for i in range (0,self.num_of_imgs):
