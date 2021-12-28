@@ -71,7 +71,7 @@ class Colors:
     def __init__(self, *args, **kwargs) -> None:
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
-        self.blue = (0, 179, 255)
+        self.blue = (99, 133, 206)
         self.green = (0, 200, 0)
         self.bright_red = (255, 0, 0)
         self.bright_green = (0, 255, 0)
@@ -310,11 +310,11 @@ class Start(Ui):
 
     def startHandle(self):
         Ui.fillBack(self)
-        # startText = pygame.font.Font("8-BIT WONDER.TTF", 48)
-        # textSurf, textRect = self.text_objects(
-        #     "Game Started", (self.WIDTH/2, self.HEIGHT/2), startText, self.white)
-        # textRect.center = ((self.WIDTH/2), 100)
-        # self.screen.blit(textSurf, textRect)
+        startText = pygame.font.Font("8-BIT WONDER.TTF", 48)
+        textSurf, textRect = self.text_objects(
+            "Soup", (self.WIDTH/2, self.HEIGHT/2), startText, self.blue)
+        textRect.center = ((self.WIDTH/2), 100)
+        self.screen.blit(textSurf, textRect)
 
     def startUi(self):
         self.startHandle()
