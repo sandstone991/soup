@@ -5,6 +5,7 @@ from random import randint
 from ui import GameOver
 from generic_entity import GenericEntity
 from particles import Particle
+from random import randint
 # temporary spirtes for testing please DELETE
 idle = [pygame.image.load('Textures/frames/big_demon_idle_anim_f0.png'), pygame.image.load('Textures/frames/big_demon_idle_anim_f1.png'),
         pygame.image.load('Textures/frames/big_demon_idle_anim_f2.png'), pygame.image.load('Textures/frames/big_demon_idle_anim_f3.png')]
@@ -14,8 +15,9 @@ run = [pygame.image.load('Textures/frames/big_demon_run_anim_f0.png'), pygame.im
 sound = 'audio/Player/player_walk.wav'
 hitSound = 'audio/weapon/audio_weapon_snd_player_hit.mp3'
 enemyDie = 'audio/weapon/audio_weapon_snd_enemy_attack_03.ogg'
-hitpSound= 'audio\weapon\Fire swoosh burning - Sound Effect.mp3'
-phf=1
+hitpSound = 'audio\weapon\Fire swoosh burning - Sound Effect.mp3'
+phf = 1
+
 
 class GenericEnemy(GenericEntity):
     """
@@ -40,10 +42,11 @@ class GenericEnemy(GenericEntity):
 
     -------
     """
+    player = 0
 
-    def __init__(self,screen,player, x=700, y=700, running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=0.3):
+    def __init__(self, screen, x=randint(10, 700), y=randint(10, 700), running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=0.3):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
-        self.player = player
+
         self.screen = screen
         self.dx = 0
         self.dy = 0
@@ -60,13 +63,13 @@ class GenericEnemy(GenericEntity):
         self.enemyDieSound.set_volume(.7)
         self.damageFlag = 0
         self.distance = 99999999
-        self.particles =[]
+        self.particles = []
         # self.healthWidth = 400
         # self.healthHeight = 150
         # self.WIDTH = 1366
         # self.HEIGHT = 768
         self.listOfActions = [self.calculateDistance,
-                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl,self.drawAdditions,self.isStillAlive,self.attack]
+                              self.isInAttackRange, self.move, self.applyMove, self.playerAttack, self.damageControl, self.drawAdditions, self.isStillAlive, self.attack]
         # self.healthList = [
         #     pygame.image.load('Textures/imagesUi/health0.png'),
         #     pygame.image.load('Textures/imagesUi/health1.png'),
@@ -75,39 +78,38 @@ class GenericEnemy(GenericEntity):
         #     pygame.image.load('Textures/imagesUi/health4.png'),
         #     pygame.image.load('Textures/imagesUi/health5.png')
         #     ]
-        
-        
+
     def calculateDistance(self):
         self.distance = math.sqrt(
-            (self.player.x-self.x)**2 + (self.player.y-self.y)**2)
+            (GenericEnemy.player.x-self.x)**2 + (GenericEnemy.player.y-self.y)**2)
 
     def isInRange(self, range):
         if self.distance <= range:
             return True
         else:
             return False
-    
+
     # check if the player attcks the enemy, in case of attacing -> do some damage to the enemy
     def playerAttack(self):
-        if self.distance <= 20 and self.damageFlag:
+        if self.distance <= 50 and self.damageFlag:
             self.takeDamage(1)
             self.hitSound.play()
             print(self.health)
             self.createParticles()
             self.drawParticles()
             # self.cleanParticles()
-    
+
     # holding the damage rate (to avoid some other bugs)
     def damageControl(self):
-        if self.damageFlag!=0:
-            self.damageFlag-=1
+        if self.damageFlag != 0:
+            self.damageFlag -= 1
         else:
-            self.damageFlag= 0
-        """if self.player.damageFlag!=0:
-            self.player.damageFlag-=1
+            self.damageFlag = 0
+        """if GenericEnemy.player.damageFlag!=0:
+            GenericEnemy.player.damageFlag-=1
         else:
-            self.player.damageFlag= 0"""
-       
+            GenericEnemy.player.damageFlag= 0"""
+
     def isInAttackRange(self):
         if self.isInRange(self.attackRange):
             self.velX = 0
@@ -122,7 +124,6 @@ class GenericEnemy(GenericEntity):
     #     image_surf = self.scaleImage(img_Surf, w, h)
     #     return image_surf, image_rect
 
-    
     # def healthBar(self):
     #     self.health0_Surf, self.health0_Rect = self.setImage(
     #         self.healthList[0], self.WIDTH/2 , -30, self.healthWidth, self.healthHeight)
@@ -136,34 +137,34 @@ class GenericEnemy(GenericEntity):
     #         self.healthList[4], self.WIDTH/2, -30, self.healthWidth, self.healthHeight)
     #     self.health5_Surf, self.health5_Rect = self.setImage(
     #         self.healthList[5], self.WIDTH/2 , -30, self.healthWidth, self.healthHeight)
-    #     if self.player.health > 84:
+    #     if GenericEnemy.player.health > 84:
     #         self.screen.blit(self.health5_Surf, self.health5_Rect)
-    #     elif self.player.health < 84 and self.player.health > 68: 
+    #     elif GenericEnemy.player.health < 84 and GenericEnemy.player.health > 68:
     #         self.screen.blit(self.health4_Surf, self.health4_Rect)
-    #     elif self.player.health < 68 and self.player.health > 52: 
+    #     elif GenericEnemy.player.health < 68 and GenericEnemy.player.health > 52:
     #         self.screen.blit(self.health3_Surf, self.health3_Rect)
-    #     elif self.player.health < 52 and self.player.health > 35: 
+    #     elif GenericEnemy.player.health < 52 and GenericEnemy.player.health > 35:
     #         self.screen.blit(self.health2_Surf, self.health2_Rect)
-    #     elif self.player.health < 35 and self.player.health > 18: 
+    #     elif GenericEnemy.player.health < 35 and GenericEnemy.player.health > 18:
     #         self.screen.blit(self.health1_Surf, self.health1_Rect)
-    #     elif self.player.health < 18: 
+    #     elif GenericEnemy.player.health < 18:
     #         self.screen.blit(self.health0_Surf, self.health0_Rect)
 
     def attack(self):
-        if self.isInRange(self.attackRange)and self.player.health:
-            self.player.takeDamage(self.attackPower)
+        if self.isInRange(self.attackRange) and GenericEnemy.player.health:
+            GenericEnemy.player.takeDamage(self.attackPower)
             self.hitSound.play()
             self.hitpSound.play()
-            print("phealth:",self.player.health)
-        if (self.player.health == 0):
-                self.player.healthFlag = True
-                self.player.health = 100
-                
-                # print(phf)
+            print("phealth:", GenericEnemy.player.health)
+        if (GenericEnemy.player.health == 0):
+            GenericEnemy.player.healthFlag = True
+            GenericEnemy.player.health = 100
+
+            # print(phf)
     def move(self):
         if not self.attacking:
             if self.isInRange(self.detectRange):
-                dx, dy = self.player.x-self.x, self.player.y-self.y
+                dx, dy = GenericEnemy.player.x-self.x, GenericEnemy.player.y-self.y
                 dist = math.hypot(dx, dy)
                 dx, dy = dx/dist, dy/dist
                 self.velX = dx*self.speed
@@ -179,15 +180,17 @@ class GenericEnemy(GenericEntity):
                 self.coolDownTimer += 1
 
     def drawAdditions(self):
-        pygame.draw.rect(self.screen, (255,0,0),(self.rect.x,self.rect.y,self.health,5))
+        pygame.draw.rect(self.screen, (255, 0, 0),
+                         (self.rect.x, self.rect.y, self.health, 5))
 
     def isStillAlive(self):
         if self.health <= 5:
             self.enemyDieSound.play()
-    
+
     def createParticles(self):
         for x in range(randint(15, 25)):
-            particle = Particle(self.rect.x+20, self.rect.y+30, randint(0,50)/10, randint(-3, -1), randint(2, 5), (166,16,30),1.5)
+            particle = Particle(self.rect.x+20, self.rect.y+30, randint(0, 50)/10,
+                                randint(-3, -1), randint(2, 5), (166, 16, 30), 1.5)
             self.particles.append(particle)
 
     def drawParticles(self):
