@@ -290,7 +290,6 @@ class Ui(Colors, Images):
 
                     elif quitRect.collidepoint(event.pos):
                         self.press_sound.play()
-
                         self.resetDelay()
                         pygame.quit()
                         sys.exit()
@@ -402,9 +401,10 @@ class Start(Ui):
 
             pygame.display.update()
 
- class GameOver(Ui):
-    def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started) -> None:   #constructor => argument 
-        super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)      #بتدي ال parent class ال ارجيومنت بتاعته
+
+class GameOver(Ui):
+    def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started) -> None:
+        super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)
 
     def gameOver(self):
         Ui.fillBack(self)
@@ -426,10 +426,10 @@ class Start(Ui):
                     pygame.quit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
+                        waiting = False
                         pygame.quit()
                         exit()
             pygame.display.update()
-
 
 
 class HighScore(Ui):
@@ -437,7 +437,7 @@ class HighScore(Ui):
         super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)
         self.highScores = []
         self.quit_surface = pygame.image.load(
-            'Textures/imagesUi/back.png').convert()
+            'Textures/imagesUi/quit.png').convert()
         self.quitSurf, self.quitRect = self.setImage(
             self.quit_surface, WIDTH/2 + 50,  HEIGHT/2 + 250, self.imgWidth, self.imgHeight)
         
@@ -518,6 +518,8 @@ class HighScore(Ui):
                     if self.quitRect.collidepoint(event.pos):
                         self.press_sound.play()
                         self.resetDelay()
+                        pygame.quit()
+                        quit()
                         
                         
 
