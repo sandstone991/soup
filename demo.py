@@ -50,6 +50,8 @@ while True:
         enemyCounter = 0
 
     if playerO.healthFlag == True:
+        with open("highscore.txt", "a+") as f:
+            f.write(" "+str(GenericEntity.playerScore))
         over.gameOver()
         playerO.healthFlag = False
     start.startUi()
