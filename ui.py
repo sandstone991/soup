@@ -306,6 +306,7 @@ class Start(Ui):
         self.highScores = HighScore()
 
         super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)
+        self.highScores = HighScore()
 
     def startHandle(self):
         Ui.fillBack(self)
