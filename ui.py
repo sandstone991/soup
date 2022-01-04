@@ -67,7 +67,7 @@ class Images:
         super(Images, self).__init__(*args, **kwargs)
 
 
-class Colors:
+class Colors: 
     def __init__(self, *args, **kwargs) -> None:
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
@@ -81,7 +81,7 @@ class Colors:
         super(Colors, self).__init__(*args, **kwargs)
 
 
-class Ui(Colors, Images):
+class Ui(Colors, Images): #multiple inheritance
 
     def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started, *args, **kwargs) -> None:
         super(Ui, self).__init__(*args, **kwargs)
