@@ -152,6 +152,14 @@ class GenericEnemy(GenericEntity):
     #         self.screen.blit(self.health1_Surf, self.health1_Rect)
     #     elif GenericEnemy.player.health < 18:
     #         self.screen.blit(self.health0_Surf, self.health0_Rect)
+    def gradientRect(self,screen, left_colour, right_colour, target_rect ):
+    #Draw a horizontal-gradient filled rectangle covering <target_rect>
+        colour_rect = pygame.Surface( ( 2, 2 ) )
+        colour_rect.set_alpha(128)                                   # tiny! 2x2 bitmap
+        pygame.draw.line( colour_rect, left_colour,  ( 0,0 ), ( 0,1 ) )            # left colour line
+        pygame.draw.line( colour_rect, right_colour, ( 1,0 ), ( 1,1 ) )            # right colour line
+        colour_rect = pygame.transform.smoothscale( colour_rect, ( target_rect.width, target_rect.height ) )  # stretch!
+        screen.blit( colour_rect, target_rect )  
 
     def attack(self):
         if self.isInRange(self.attackRange)and self.player.health:
