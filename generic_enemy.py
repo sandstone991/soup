@@ -17,6 +17,9 @@ hitSound = 'audio/weapon/audio_weapon_snd_player_hit.mp3'
 enemyDie = 'audio/weapon/audio_weapon_snd_enemy_attack_03.ogg'
 hitpSound = 'audio\weapon\Fire swoosh burning - Sound Effect.mp3'
 phf = 1
+WIDTH = 1366
+HEIGHT = 768
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
 class GenericEnemy(GenericEntity):
@@ -151,15 +154,25 @@ class GenericEnemy(GenericEntity):
     #         self.screen.blit(self.health0_Surf, self.health0_Rect)
 
     def attack(self):
-        if self.isInRange(self.attackRange) and GenericEnemy.player.health:
-            GenericEnemy.player.takeDamage(self.attackPower)
+        if self.isInRange(self.attackRange)and self.player.health:
+            self.player.takeDamage(self.attackPower)
             self.hitSound.play()
             self.hitpSound.play()
-            print("phealth:", GenericEnemy.player.health)
-        if (GenericEnemy.player.health == 0):
-            GenericEnemy.player.healthFlag = True
-            GenericEnemy.player.health = 100
+            #self.playerAttacked()
+            circle=pygame.Surface((WIDTH*2,HEIGHT*2), pygame.SRCALPHA)
+            #circle.set_alpha(128)
+            pygame.draw.circle(circle, (255,0,0,128), (WIDTH/2,HEIGHT/2), HEIGHT+25,150)
+            screen.blit(circle, (0, 0))
 
+            self.gradientRect(screen, (255,0,0), (255, 102, 102),pygame.Rect(0, 0,50 ,HEIGHT))
+            self.gradientRect(screen, (255,0,0), (255, 102, 102),pygame.Rect(0, 0,WIDTH ,50))
+            self.gradientRect(screen, (255, 102, 102), (255,0,0),pygame.Rect(WIDTH-50, 0,50 ,HEIGHT))
+            self.gradientRect(screen,(255, 102, 102), (255,0,0), pygame.Rect(0, HEIGHT-50,WIDTH ,50))
+            #print(self.player.health)
+        """   if (self.player.health == 0):
+                Weapon.kill()
+                phf=0
+                print(phf)"""
             # print(phf)
     def move(self):
         if not self.attacking:
