@@ -53,7 +53,7 @@ while True:
 
     if playerO.healthFlag == True:
         with open("highscore.txt", "a+") as f:
-            f.write(" "+str(GenericEntity.playerScore))
+            f.write(" " + str(GenericEntity.playerScore))
         over.gameOver()
         playerO.healthFlag = False
     start.startUi()

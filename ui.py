@@ -176,6 +176,7 @@ class Ui(Colors, Images):
     def newGame(self):
         self.started = False
 
+
     def handleImages(self):
         self.fillBack()
         largeText = pygame.font.Font("8-BIT WONDER.TTF", 48)
@@ -303,10 +304,9 @@ class Ui(Colors, Images):
 
 class Start(Ui):
     def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started) -> None:
-        self.highScores = HighScore()
 
         super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)
-        self.highScores = HighScore()
+        self.highScores = HighScore(screen, WIDTH, HEIGHT, floor_surface, started)
 
     def startHandle(self):
         Ui.fillBack(self)
@@ -385,6 +385,9 @@ class Start(Ui):
                         self.press_sound.play()
                         self.resetDelay()
                         self.highScores.sortHighScores()
+                        self.highScores.showHighScores()
+
+
                     elif quitRect.collidepoint(event.pos):
                         self.press_sound.play()
                         self.resetDelay()
@@ -432,12 +435,100 @@ class GameOver(Ui):
 
 class HighScore(Ui):
     def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started):
-        self.highScores = []
         super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)
+        self.highScores = []
+        self.quit_surface = pygame.image.load(
+            'Textures/imagesUi/back.png').convert()
+        self.quitSurf, self.quitRect = self.setImage(
+            self.quit_surface, WIDTH/2 + 50,  HEIGHT/2 + 250, self.imgWidth, self.imgHeight)
+        
+        
+    def startHandle(self):
+        Ui.fillBack(self)
+        self.show()
 
+    def show(self):
+        scoreText = pygame.font.Font("8-BIT WONDER.TTF", 48)
+        firstSurf, firstRect = self.text_objects(
+            "1ST : ", (self.WIDTH/2, self.HEIGHT/2-250), scoreText, self.blue)
+        self.screen.blit(firstSurf, firstRect)
+        
+        
+        fSurf, fRect = self.text_objects(
+            self.highScores[0], (self.WIDTH/2 + 150, self.HEIGHT/2-250), scoreText, self.blue)
+        self.screen.blit(fSurf, fRect)
+
+
+        secondSurf, secondRect = self.text_objects(
+            "2ND : ", (self.WIDTH/2, self.HEIGHT/2-150), scoreText, self.blue)
+        self.screen.blit(secondSurf, secondRect)
+        
+        sSurf, sRect = self.text_objects(
+            self.highScores[1], (self.WIDTH/2 + 150, self.HEIGHT/2-150), scoreText, self.blue)
+        self.screen.blit(sSurf, sRect)
+
+        thirdSurf, thirdRect = self.text_objects(
+            "3RD : ", (self.WIDTH/2, self.HEIGHT/2-50), scoreText, self.blue)
+        self.screen.blit(thirdSurf, thirdRect)
+
+        tSurf, tRect = self.text_objects(
+            self.highScores[2], (self.WIDTH/2 + 150, self.HEIGHT/2-50), scoreText, self.blue)
+        self.screen.blit(tSurf, tRect)
+
+        
+        fourthSurf, fourthRect = self.text_objects(
+            "4TH : ", (self.WIDTH/2, self.HEIGHT/2+50), scoreText, self.blue)
+        self.screen.blit(fourthSurf, fourthRect)
+        
+        foSurf, foRect = self.text_objects(
+            self.highScores[3], (self.WIDTH/2 + 150, self.HEIGHT/2 + 50), scoreText, self.blue)
+        self.screen.blit(foSurf, foRect)
+
+        fifthSurf, fifthRect = self.text_objects(
+            "5TH : ", (self.WIDTH/2, self.HEIGHT/2+150), scoreText, self.blue)
+        self.screen.blit(fifthSurf, fifthRect)
+
+        fiSurf, fiRect = self.text_objects(
+            self.highScores[4], (self.WIDTH/2 + 150, self.HEIGHT/2 + 150), scoreText, self.blue)
+        self.screen.blit(fiSurf, fiRect)
+        
+    def showHighScores(self):
+        self.fillBack()
+        self.show()
+        while self.started:
+
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                elif event.type == pygame.MOUSEMOTION:
+                    if self.quitRect.collidepoint(pygame.mouse.get_pos()):
+                        if self.soundFlag6:
+                            self.soundFlag6 = False
+                            self.hover_sound.play()
+                        self.quitSurf, self.quitRect = self.setImage(
+                            self.quit_surface, self.WIDTH/2 + 50, self.HEIGHT/2 + 250, self.imgWidth + self.widthAdd, self.imgHeight + self.heightAdd)
+                    else:
+                        self.startHandle()
+                        self.soundFlag6 = True
+                        self.quitSurf, self.quitRect = self.setImage(
+                            self.quit_surface, self.WIDTH/2 + 50, self.HEIGHT/2 + 250, self.imgWidth, self.imgHeight)
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    # Check if the buttons were clicked.
+                    if self.quitRect.collidepoint(event.pos):
+                        self.press_sound.play()
+                        self.resetDelay()
+                        
+                        
+
+            self.screen.blit(self.quitSurf, self.quitRect)
+            pygame.display.update()
+            
     def sortHighScores(self):
         with open("highscore.txt", "r") as f:
             str = f.read()
             self.highScores = str.split(' ')
             self.highScores.sort()
+            self.highScores = sorted(self.highScores,reverse=True)
         print(self.highScores)

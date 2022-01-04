@@ -34,7 +34,7 @@ class Player(GenericEntity):
         self.healthFlag = False
         self.health = health
         self.listOfActions = [self.move, self.applyMove,
-                              self.updateWeapon, self.attack]
+                              self.updateWeapon, self.attack,self.drawAdditions]
         self.weapon = weapon
         self.screen = screen
         self.healthWidth = 370
@@ -253,7 +253,16 @@ class Player(GenericEntity):
         self.weapon.x = self.x
         self.weapon.y = self.y
         self.weapon.applyActions()
-
+    def setImage(self, img_Surf, x, y, w, h):
+        image_rect = pygame.Rect(x-(w/2), y, w, h)
+        image_surf = self.scaleImage(img_Surf, w, h)
+        return image_surf, image_rect
+        
     def drawAdditions(self):
-        # pygame.draw.rect(screen, (255,0,0),(1366/2 - 100,10,self.health * 5 ,75))
-        pass
+            self.health5_surface = pygame.image.load(
+                'Textures/imagesUi/heart.png')
+            health5_Surf, health5_Rect = self.setImage(
+            self.health5_surface, self.WIDTH/2 - 150, 0,100, 100)
+            self.screen.blit(health5_Surf, health5_Rect)    
+
+            pygame.draw.rect(self.screen, (255,0,0),(1366/2 - 100,10,self.health * 5 ,75))    
