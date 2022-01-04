@@ -307,7 +307,8 @@ class Ui(Colors, Images):
 class Start(Ui):
     def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started) -> None:
         super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)
-
+        self.highScores = HighScore()
+        
     def startHandle(self):
         Ui.fillBack(self)
         startText = pygame.font.Font("8-BIT WONDER.TTF", 48)
@@ -383,6 +384,7 @@ class Start(Ui):
                     elif highRect.collidepoint(event.pos):
                         self.press_sound.play()
                         self.resetDelay()
+                        self.highScores.sortHighScores()
 
                     elif quitRect.collidepoint(event.pos):
                         self.press_sound.play()
