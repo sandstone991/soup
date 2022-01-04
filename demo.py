@@ -92,9 +92,10 @@ while True:
             weaponO.attackFlag = 20
             weaponO.attackDelay()
             # li = pygame.sprite.groupcollide(enemy, weapon, False, False)
-            # for e in li:
-            #     e.health -= 10
-            enemyO.damageFlag = 5
+            for e in enemy:
+                if e.distance <= 20:
+                    e.damageFlag =5 
+                    
         if event.type == pygame.MOUSEBUTTONUP:
             weaponO.attackFlag = False
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
