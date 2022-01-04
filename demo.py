@@ -44,7 +44,7 @@ game_over = True
 
 while True:
     enemyCounter += 1
-    if enemyCounter == 500 and len(enemy) < 3:
+    if enemyCounter == 100:
         enemy.add(GenericEnemy(screen=screen,
                   x=randint(0, 1300), y=randint(0, 700)))
         enemyCounter = 0
@@ -93,9 +93,9 @@ while True:
             weaponO.attackDelay()
             # li = pygame.sprite.groupcollide(enemy, weapon, False, False)
             for e in enemy:
-                if e.distance <= 20:
-                    e.damageFlag =5 
-                    
+                if e.distance <= 50:
+                    e.damageFlag = 5
+
         if event.type == pygame.MOUSEBUTTONUP:
             weaponO.attackFlag = False
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:

@@ -1,7 +1,7 @@
 from player import Player
 import pygame
 import math
-from random import randint
+
 from ui import GameOver
 from generic_entity import GenericEntity
 from particles import Particle
@@ -44,7 +44,7 @@ class GenericEnemy(GenericEntity):
     """
     player = 0
 
-    def __init__(self, screen, x=randint(10, 700), y=randint(10, 700), running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=100, attackRange=20, attackPower=0.3):
+    def __init__(self, screen, x=randint(10, 700), y=randint(10, 700), running=run, idiling=idle, sounds=sound, scale=(50, 80), speed=2, health=50, detectRange=300, attackRange=20, attackPower=0.3):
         super().__init__(x, y, running, idiling, sounds, scale, speed, health)
 
         self.screen = screen
@@ -170,8 +170,13 @@ class GenericEnemy(GenericEntity):
                 self.velX = dx*self.speed
                 self.velY = dy*self.speed
             else:
-                self.velX = 0
-                self.velY = 0
+                if randint(0, 10) == 10:
+                    self.velX = randint(-6, 6)
+                    self.velY = randint(-4, 4)
+                else:
+                    self.velX = 0
+                    self.velY = 0
+
         else:
             if self.coolDownTimer > self.attackCoolDown:
                 self.attacking = False
