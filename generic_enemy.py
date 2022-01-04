@@ -159,28 +159,21 @@ class GenericEnemy(GenericEntity):
         pygame.draw.line( colour_rect, left_colour,  ( 0,0 ), ( 0,1 ) )            # left colour line
         pygame.draw.line( colour_rect, right_colour, ( 1,0 ), ( 1,1 ) )            # right colour line
         colour_rect = pygame.transform.smoothscale( colour_rect, ( target_rect.width, target_rect.height ) )  # stretch!
-        screen.blit( colour_rect, target_rect )  
-
+        screen.blit( colour_rect, target_rect ) 
     def attack(self):
-        if self.isInRange(self.attackRange)and self.player.health:
-            self.player.takeDamage(self.attackPower)
+        if self.isInRange(self.attackRange) and GenericEnemy.player.health:
+            GenericEnemy.player.takeDamage(self.attackPower)
             self.hitSound.play()
             self.hitpSound.play()
-            #self.playerAttacked()
+            print("phealth:", GenericEnemy.player.health)
             circle=pygame.Surface((WIDTH*2,HEIGHT*2), pygame.SRCALPHA)
             #circle.set_alpha(128)
             pygame.draw.circle(circle, (255,0,0,128), (WIDTH/2,HEIGHT/2), HEIGHT+25,150)
             screen.blit(circle, (0, 0))
+        if (GenericEnemy.player.health == 0):
+            GenericEnemy.player.healthFlag = True
+            GenericEnemy.player.health = 100
 
-            self.gradientRect(screen, (255,0,0), (255, 102, 102),pygame.Rect(0, 0,50 ,HEIGHT))
-            self.gradientRect(screen, (255,0,0), (255, 102, 102),pygame.Rect(0, 0,WIDTH ,50))
-            self.gradientRect(screen, (255, 102, 102), (255,0,0),pygame.Rect(WIDTH-50, 0,50 ,HEIGHT))
-            self.gradientRect(screen,(255, 102, 102), (255,0,0), pygame.Rect(0, HEIGHT-50,WIDTH ,50))
-            #print(self.player.health)
-        """   if (self.player.health == 0):
-                Weapon.kill()
-                phf=0
-                print(phf)"""
             # print(phf)
     def move(self):
         if not self.attacking:
