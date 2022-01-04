@@ -32,6 +32,7 @@ class GenericEntity (pygame.sprite.Sprite):
     applyActions()   :Runs all the logic required for the next frame before applying the animation required
     update()         :Calls applyActions() and handleAnimation() (Will be updated when new actions are added)
     """
+    playerScore = 0
 
     def __init__(self, x, y, running, idiling, sounds, scale, speed, health):
         super().__init__()
@@ -132,9 +133,11 @@ class GenericEntity (pygame.sprite.Sprite):
 
     def isEntityAlive(self):
         if self.health <= 0:
+            GenericEntity.playerScore += 1
             self.isAlive = False
             self.health = 0
             self.kill()
+
     def update(self):
         self.applyActions()
         self.handleAnimation()

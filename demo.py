@@ -1,5 +1,7 @@
 
+from os import read
 import pygame
+from generic_entity import GenericEntity
 from player import Player
 from generic_enemy import GenericEnemy, phf
 from sys import exit
@@ -50,6 +52,8 @@ while True:
         enemyCounter = 0
 
     if playerO.healthFlag == True:
+        with open("highscore.txt", "a+") as f:
+            f.write(" "+str(GenericEntity.playerScore))
         over.gameOver()
         playerO.healthFlag = False
     start.startUi()
