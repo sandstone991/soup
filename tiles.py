@@ -26,6 +26,9 @@ class Create (StaticTile):
         # self.floor_type = floor[str(cell)]
       
         super().__init__(size,x,y, pygame.image.load(type).convert_alpha())
+        offset_y = y +size 
+        self.rect = self.image.get_rect(bottomleft = (x,offset_y))
+        
         
        
          
