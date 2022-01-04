@@ -402,6 +402,34 @@ class Start(Ui):
 
             pygame.display.update()
 
+ class GameOver(Ui):
+    def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started) -> None:   #constructor => argument 
+        super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)      #بتدي ال parent class ال ارجيومنت بتاعته
+
+    def gameOver(self):
+        Ui.fillBack(self)
+        gameOverText = pygame.font.Font("8-BIT WONDER.TTF", 48)
+        newText = pygame.font.Font("8-BIT WONDER.TTF", 24)
+
+        toSurf, toRect = self.text_objects(
+            "Game Over", (self.WIDTH/2, self.HEIGHT/2), gameOverText, (102, 76, 155))
+        taSurf, taRect = self.text_objects(
+            "Press Enter to exit game", (self.WIDTH/2, self.HEIGHT/2 + 200), newText, self.white)
+
+        self.screen.blit(toSurf, toRect)
+        self.screen.blit(taSurf, taRect)
+
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        pygame.quit()
+                        exit()
+            pygame.display.update()
+
 
 
 class HighScore(Ui):
