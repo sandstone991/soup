@@ -427,3 +427,14 @@ class GameOver(Ui):
                         pygame.quit()
                         exit()
             pygame.display.update()
+class HighScore(Ui):
+    def __init__(self, screen, WIDTH, HEIGHT, floor_surface, started):
+        self.highScores = []
+        super().__init__(screen, WIDTH, HEIGHT, floor_surface, started)
+
+    def sortHighScores(self):
+        with open("highscore.txt", "r") as f:
+            str = f.read()
+            self.highScores = str.split(' ')
+            self.highScores.sort()
+        print(self.highScores)
